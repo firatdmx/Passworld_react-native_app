@@ -33,8 +33,10 @@ const Profiles = ({navigation}) => {
 
     };
 
-    const addProfile =  (profName) => {
-      firestore().collection("profiles").doc(profName).set({})
+    const addProfile = async (profName) => {
+      const profs = firestore().collection("profiles")
+      profs.doc(profName).set({})
+      setNewProfileName("")
       setProfileAddModalVisible(false);
       fetchProfiles();
     }
@@ -82,6 +84,7 @@ const Profiles = ({navigation}) => {
           firestore().collection("profiles").doc(secprofil).delete()
           setDeleteModalVisible(false)
           fetchProfiles();
+          setVerificationText("")
         } 
         else {
           console.log("Verification failed.")
