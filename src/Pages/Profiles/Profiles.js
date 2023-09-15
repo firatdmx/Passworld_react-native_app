@@ -2,9 +2,10 @@ import { SafeAreaView, Text,Button, FlatList, View, TextInput, TouchableOpacity,
 import React, {useState, useEffect, useCallback, BackHandler} from 'react'
 import styles from './Profiles.styles.js'
 import firestore from '@react-native-firebase/firestore';
-import ViewProfiles from '../../components/ViewProfiles/ViewProfiles.js';
+import ViewProfiles from '../../components/ViewProfiles';
 import Modal from 'react-native-modal';
 import { useFocusEffect } from '@react-navigation/native';
+import FloatingButton from '../../components/FloatingButton';
 
 const Profiles = ({navigation}) => {
 
@@ -106,7 +107,7 @@ const Profiles = ({navigation}) => {
 
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={styles.main}>
 
             <Text 
               style={styles.title}>
@@ -114,7 +115,7 @@ const Profiles = ({navigation}) => {
             </Text>
 
             <FlatList data={data} renderItem={render} />
-            <Button title='ADD' onPress={toggleProfileAddModal} />
+            <FloatingButton title={"+"} pressAction={toggleProfileAddModal} />
 
             <Modal 
               isVisible={profileAddModalVisible}
@@ -138,6 +139,7 @@ const Profiles = ({navigation}) => {
                   <TouchableOpacity onPress={() => addProfile(newProfileName)} >
                     <Text style={styles.addModal.addBtnText}>Add</Text>
                   </TouchableOpacity>
+
 
                 </View>
 

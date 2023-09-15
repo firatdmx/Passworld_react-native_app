@@ -19,14 +19,15 @@ export default styles = StyleSheet.create({
         main: {
             alignSelf:'center',
             width:deviceWidth * 0.7 ,
-            height:deviceHeight * 0.33,
+            height:deviceHeight * 0.31,
             backgroundColor:'white',
             padding:5,
+            borderRadius:15,
         },
         title: {
             textAlign:'center', 
             fontWeight:'bold',
-            fontSize:20,
+            fontSize:22,
             color:'red',
             marginTop:0,
             top:0

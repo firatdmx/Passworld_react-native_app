@@ -164,8 +164,9 @@ const DashBoard = () => {
         {/* <Text>User: {user} </Text> */}
         <Text>Active User: {user} </Text>
         <Text>Chosen Profile: {profile} </Text>
+
+        {/* bunu drawera ekle */}
         <Button title='LOGOUT' onPress={signOut} />
-        <Button title='SUBMIT' color={"red"} onPress={getRecords} />
         
         {data.length > 0 ? <FlatList data={data} renderItem={render} /> : <Text> No entries found</Text>}
       </View>
@@ -174,7 +175,7 @@ const DashBoard = () => {
         <FloatingButton pressAction={() => {
           setModalVisible(!modalVisible)
           console.log("modal visible status: ", modalVisible)
-          }}  title={"Add"}/>
+          }}  title={"+"}/>
       </View>
 
 
@@ -184,10 +185,10 @@ const DashBoard = () => {
       
       <Modal 
               isVisible={modalVisible}
-              statusBarTranslucent={true}
+              statusBarTranslucent={false}
               onBackButtonPress={handleCancel}
               onBackdropPress={handleCancel}
-              animationType="fade"
+              animationType="slide"
               transparent={true}
               >
               

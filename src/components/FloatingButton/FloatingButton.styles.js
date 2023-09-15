@@ -12,11 +12,17 @@ export default styles = StyleSheet.create({
         borderWidth:2,
         borderColor:'#d1d1d190',
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        shadowOffset: {width:10, height:10},
+        shadowOpacity:1,
+        shadowRadius:10,
+        shadowColor:'black',
+        elevation: 8
     },
     text: {
-        color:'black',
+        color:'white',
         fontWeight:'bold',
-        textAlign:'center'
+        textAlign:'center',
+        fontSize:50,
     }
 })
