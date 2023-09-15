@@ -1,12 +1,12 @@
 import { Text, Button, FlatList, View, TouchableOpacity, TextInput, Alert } from 'react-native'
-import React, {useState, useEffect, useCallback, useRef} from 'react'
+import React, {useState, useCallback, useRef} from 'react'
 import styles from './DashBoard.styles.js'
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore';
-import Viewall from '../../components/Viewall/Viewall.js';
+import Viewall from '../../components/Viewall';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
-import FloatingButton from '../../components/FloatingButton/FloatingButton.js';
+import FloatingButton from '../../components/FloatingButton';
 import Modal from 'react-native-modal';
 
 // import CustomModal from '../../components/CustomModal/';
@@ -20,6 +20,7 @@ const DashBoard = () => {
   const usernameRef = useRef();
   const passwordRef = useRef();
 
+
   const focusUsername = () => {
     usernameRef.current.focus()
   }
@@ -28,7 +29,7 @@ const DashBoard = () => {
   }
 
   const profile = useSelector((state) => state.profile.value)
-  console.log("PROFILEEEEEEEEEE: ", profile)
+  // console.log("PROFILEEEEEEEEEE: ", profile)
   const [user, setUser] = useState("");
   const [data, setData] = useState([])
   const [newPlatformName, setNewPlatformName] = useState("")
@@ -56,18 +57,10 @@ const DashBoard = () => {
     }
   }
 
-  useEffect(() => {
-    console.log("DATA BR:", data)
-    getCurrentUser()
-    if (getCurrentUser() == false) {
-      console.log("LOGGED doesnt exist");
-    }
-
-  }, [])
-
 
   useFocusEffect(
     useCallback(() => {
+      getCurrentUser();
       getRecords();
     }, [])
   )
@@ -76,7 +69,7 @@ const DashBoard = () => {
   const signOut = () => {
     auth().signOut() 
                 .then(res => {
-                  console.log('successfully logged out: ', res)
+                  // console.log('successfully logged out: ', res)
                   dispatch(logout())
 
                 }) 
@@ -96,9 +89,9 @@ const DashBoard = () => {
 
   const handleSave = () => {
     if (newPlatformName && newUserName && newPassword) {
-      console.log("Platform: ", newPlatformName)
-      console.log("User: ", newUserName)
-      console.log("Password: ", newPassword)
+      // console.log("Platform: ", newPlatformName)
+      // console.log("User: ", newUserName)
+      // console.log("Password: ", newPassword)
 
       firestore().collection("profiles").doc(profile).collection('records').add({
         platform: newPlatformName,
@@ -174,7 +167,7 @@ const DashBoard = () => {
       <View style={styles.floatingButtonView}>
         <FloatingButton pressAction={() => {
           setModalVisible(!modalVisible)
-          console.log("modal visible status: ", modalVisible)
+          // console.log("modal visible status: ", modalVisible)
           }}  title={"+"}/>
       </View>
 

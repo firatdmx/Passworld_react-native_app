@@ -1,4 +1,3 @@
-import React from 'react'
 import AuthPage from '../../Pages/Auth'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 

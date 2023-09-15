@@ -1,4 +1,4 @@
-import { SafeAreaView, Text, Button, FlatList, TextInput, View } from 'react-native'
+import { SafeAreaView, Text, Button, TextInput, View } from 'react-native'
 import React, {useState, useEffect, useCallback} from 'react'
 import styles from './EditRecord.styles.js'
 import firestore from '@react-native-firebase/firestore';
@@ -10,14 +10,13 @@ const EditRecord = ({navigation}) => {
     const [data, setData] = useState(null);
 
     const updateMethod = async () => {
-    const certain = await firestore().collection('profiles').doc(profileValue).collection('records').doc(recordIDValue)
+    await firestore().collection('profiles').doc(profileValue).collection('records').doc(recordIDValue)
     .update({
         platform: platform,
         account: account,
         pass: password,
     });
-    console.log(certain)
-    navigation.goBack();
+    navigation.goBack(); //bu mantikli mi?
 }
 
 
@@ -50,12 +49,11 @@ const EditRecord = ({navigation}) => {
     const recordIDValue = useSelector((state) => state.recordID.value)
     
     const getirrr = async () => {
-        let i;
         try {
           const notes = await firestore().collection('profiles').doc(profileValue).collection('records').doc(recordIDValue).get();
           setData(notes.data())
 
-          console.log("data:  →", data)
+        //   console.log("data:  →", data)
 
         } catch (error) {
           console.error("Hata oluştu:", error);

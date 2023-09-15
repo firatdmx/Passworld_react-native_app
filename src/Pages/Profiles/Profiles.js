@@ -1,5 +1,5 @@
-import { SafeAreaView, Text,Button, FlatList, View, TextInput, TouchableOpacity,Dimensions, Pressable, Alert } from 'react-native'
-import React, {useState, useEffect, useCallback, BackHandler} from 'react'
+import { SafeAreaView, Text, FlatList, View, TextInput, TouchableOpacity, Pressable, Alert } from 'react-native'
+import React, {useState, useEffect, useCallback} from 'react'
 import styles from './Profiles.styles.js'
 import firestore from '@react-native-firebase/firestore';
 import ViewProfiles from '../../components/ViewProfiles';
@@ -7,10 +7,7 @@ import Modal from 'react-native-modal';
 import { useFocusEffect } from '@react-navigation/native';
 import FloatingButton from '../../components/FloatingButton';
 
-const Profiles = ({navigation}) => {
-
-  const deviceHeight = Dimensions.get('window').height;
-  const deviceWidth = Dimensions.get('window').width;
+const Profiles = () => {
     
     const [data, setData] = useState([])
     const [selectedProfile, setSelectedProfile] = useState("")

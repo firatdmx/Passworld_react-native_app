@@ -2,10 +2,10 @@ import { Text, View, TextInput } from 'react-native'
 import React,{useState} from 'react'
 import styles from './Auth.styles.js'
 import auth from '@react-native-firebase/auth'
-import AuthButton from '../../components/AuthButton/AuthButton.js';
+import AuthButton from '../../components/AuthButton';
 
 
-const Auth = ({navigation}) => {
+const Auth = () => {
 
   const [mail, setMail] = useState("dev@dev.com");
   const [pass, setPass] = useState("123456");
@@ -39,18 +39,12 @@ const Auth = ({navigation}) => {
                     .catch(error => { console.log("hataaaaaaa ", error)  })  
         }
       }
-
-  const signOut = () => {
-        auth().signOut() 
-                    .then(res => {
-                      console.log('successfully logged out: ', res)
-                    }) 
-                    .catch(err => console.log('logout hata olustu: ', err))     }    
+   
 
   const getCurrentUser = () => {
         const user = auth().currentUser; 
         if (user) {
-            console.log(user)
+            // console.log(user)
             // console.log(user.email)
             return true
         } else {
@@ -59,22 +53,11 @@ const Auth = ({navigation}) => {
         }
         }
 
-
-
-        // useEffect(() => {
-        //   // console.log("useeffect worked")
-        //   if (getCurrentUser()) {
-        //     // console.log("LOGGED EXISTS")
-        //     navigation.navigate("Profiles")
-        //   }
-        // }, [logged])
-        
-
     return (
       <View style={styles.main}>
         <View style={styles.secondMain}>
           <Text style={styles.slogan}>
-            Welcome to my App. To login enter your info.
+            Your Pass World!
           </Text>
 
           <View style={styles.textinpRows}>
@@ -99,8 +82,6 @@ const Auth = ({navigation}) => {
 
           <AuthButton theme="orange" text="Login" action={signIn} />
           <AuthButton text="Sign Up" action={signUp} />
-          <AuthButton text="Sign Out" action={signOut} />
-          <AuthButton text="Who's There?" action={getCurrentUser} />
 
           </View>
           </View>
