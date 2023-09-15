@@ -1,4 +1,4 @@
-import { SafeAreaView, Text,Button, FlatList, View, TextInput, TouchableOpacity,Dimensions, Pressable } from 'react-native'
+import { SafeAreaView, Text,Button, FlatList, View, TextInput, TouchableOpacity,Dimensions, Pressable, Alert } from 'react-native'
 import React, {useState, useEffect, useCallback, BackHandler} from 'react'
 import styles from './Profiles.styles.js'
 import firestore from '@react-native-firebase/firestore';
@@ -8,10 +8,11 @@ import { useFocusEffect } from '@react-navigation/native';
 
 const Profiles = ({navigation}) => {
 
-    const deviceHeight = Dimensions.get('window').height;
-    const deviceWidth = Dimensions.get('window').width;
+  const deviceHeight = Dimensions.get('window').height;
+  const deviceWidth = Dimensions.get('window').width;
     
     const [data, setData] = useState([])
+    const [selectedProfile, setSelectedProfile] = useState("")
     const [newProfileName, setNewProfileName] = useState("")
 
     const [verificationText, setVerificationText] = useState("")
@@ -26,16 +27,20 @@ const Profiles = ({navigation}) => {
 
     const toggleProfileDeleteModal = (gelenveri) => {
       setDeleteModalVisible(!deleteModalVisible);
-      setNewProfileName(gelenveri)
+      setSelectedProfile(gelenveri)
 
     };
 
     const addProfile = async (profName) => {
-      const profs = firestore().collection("profiles")
-      profs.doc(profName).set({})
-      setNewProfileName("")
-      setProfileAddModalVisible(false);
-      fetchProfiles();
+      if (profName && profName[0] != " ") {
+        const profs = firestore().collection("profiles")
+        profs.doc(profName).set({})
+        setNewProfileName("")
+        setProfileAddModalVisible(false);
+        fetchProfiles();
+      } else {
+        Alert.alert("Error", "Profile name cannot be empty and cannot begin with a space character.")
+      }
     }
     
     const fetchProfiles = async () => {
@@ -52,7 +57,7 @@ const Profiles = ({navigation}) => {
           setData(docsData)
 
         } catch (error) {
-          console.error("Hata oluştu:", error);
+          console.error("Error:", error);
         }
       }
 
@@ -78,14 +83,25 @@ const Profiles = ({navigation}) => {
 
       const handleProfileDeleteAction = (secprofil) => {
         if (secprofil === verificationText) {
-          firestore().collection("profiles").doc(secprofil).delete()
-          setDeleteModalVisible(false)
-          fetchProfiles();
-          setVerificationText("")
+          firestore()
+          .collection("profiles")
+          .doc(secprofil)
+          .delete()
+          .then(
+            setDeleteModalVisible(false),
+            fetchProfiles(),
+            setVerificationText(""),
+            Alert.alert("Success", "Profile has been deleted.")
+          )
         } 
         else {
           console.log("Verification failed.")
         }
+      }
+
+      const handleModalCancel = () => {
+        setProfileAddModalVisible(false)
+        setSelectedProfile("")
       }
 
 
@@ -93,8 +109,7 @@ const Profiles = ({navigation}) => {
         <SafeAreaView>
 
             <Text 
-              style={{textAlign:'center', fontSize:30, color:'orange', fontWeight:'bold',textShadowColor: 'rgba(0, 0, 0, 0.75)', 
-              textShadowOffset: {width: -1, height: 1}, textShadowRadius: 10}}>
+              style={styles.title}>
                 Choose a profile
             </Text>
 
@@ -104,24 +119,24 @@ const Profiles = ({navigation}) => {
             <Modal 
               isVisible={profileAddModalVisible}
               statusBarTranslucent={true}
-              onBackButtonPress={() => setProfileAddModalVisible(false)}
-              onBackdropPress={() => setProfileAddModalVisible(false)}
+              onBackButtonPress={handleModalCancel}
+              onBackdropPress={handleModalCancel}
               animationType="fade"
               transparent={true}
               >
               
-              <View style={{alignSelf:'center', width:deviceWidth * 0.6 , height:deviceHeight * 0.2, backgroundColor:'white'}}>
-                <Text style={{textAlign:'center', fontWeight:'bold',fontSize:20,color:'red',marginTop:0,top:0}}>Add New Profile</Text>
+              <View style={styles.addModal.main}>
+                <Text style={styles.addModal.title}>Add New Profile</Text>
                 <Text>Profile Name:</Text>
-                <TextInput style={{borderWidth:1,borderRadius:2,padding:3,margin:5}} placeholder='Enter a new profile name: ' value={newProfileName} onChangeText={setNewProfileName} />
+                <TextInput style={styles.addModal.textinput} placeholder='Enter a new profile name: ' value={newProfileName} onChangeText={setNewProfileName} />
 
-                <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
-                  <TouchableOpacity onPress={toggleProfileAddModal} style={{alignItems:'flex-end'}}>
-                    <Text style={{fontWeight:'bold',marginRight:15, borderWidth:1,borderRadius:10,padding:5,backgroundColor:'red',color:'white'}}>Cancel</Text>
+                <View style={styles.addModal.buttonsView} >
+                  <TouchableOpacity onPress={handleModalCancel} >
+                    <Text style={styles.addModal.cancelBtnText}>Cancel</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => addProfile(newProfileName)} style={{alignItems:'flex-end'}}>
-                    <Text style={{fontWeight:'bold',marginRight:15, borderWidth:1,borderRadius:10,padding:5,paddingHorizontal:15,backgroundColor:'green',color:'white'}}>Add</Text>
+                  <TouchableOpacity onPress={() => addProfile(newProfileName)} >
+                    <Text style={styles.addModal.addBtnText}>Add</Text>
                   </TouchableOpacity>
 
                 </View>
@@ -138,19 +153,19 @@ const Profiles = ({navigation}) => {
               transparent={true}
               >
               
-              <View style={{alignSelf:'center', width:deviceWidth * 0.6 , height:deviceHeight * 0.25, backgroundColor:'white', padding:5}}>
-                <Text style={{textAlign:'center', fontWeight:'bold',fontSize:20,color:'red',marginTop:0,top:0}}>Are you sure?</Text>
-                    <Text>To delete "{newProfileName}"" profile enter <Text style={{fontWeight:"bold"}}>"{newProfileName}"</Text> into the box below and confirm.</Text>
-                    <TextInput style={{borderWidth:1, width:"95%", height:"28%", margin:10,padding:10}} value={verificationText} onChangeText={setVerificationText} />
+              <View style={styles.delModal.main}>
+                <Text style={styles.delModal.confirmText}>Are you sure?</Text>
+                    <Text>To delete "{selectedProfile}"" profile enter <Text style={styles.delModal.boldText}>"{selectedProfile}"</Text> into the box below and confirm.</Text>
+                    <TextInput style={styles.delModal.textInput} value={verificationText} onChangeText={setVerificationText} />
 
-                <View style={{flexDirection:'row',justifyContent:'center'}}>
+                <View style={styles.delModal.btnsView}>
 
-                  <Pressable onPress={() => setDeleteModalVisible(false)} style={{alignItems:'center'}}>
-                    <Text style={{fontWeight:'bold',marginRight:15,marginTop:5, borderWidth:1,borderRadius:10,padding:5,backgroundColor:'gray',color:'white'}}>Cancel</Text>
+                  <Pressable onPress={() => setDeleteModalVisible(false)} style={styles.delModal.btnProps}>
+                    <Text style={styles.delModal.cancelBtnText}>Cancel</Text>
                   </Pressable>
 
-                  <Pressable onPress={() => handleProfileDeleteAction(newProfileName)} style={{alignItems:'center'}}>
-                    <Text style={{fontWeight:'bold',marginRight:15,marginTop:5, borderWidth:1,borderRadius:10,padding:5,backgroundColor:'red',color:'white'}}>Confirm</Text>
+                  <Pressable onPress={() => handleProfileDeleteAction(selectedProfile)} style={styles.delModal.btnProps}>
+                    <Text style={styles.delModal.confirmBtnText}>Confirm</Text>
                   </Pressable>
 
                 </View>

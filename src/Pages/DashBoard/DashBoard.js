@@ -1,5 +1,5 @@
-import { Text, Button, FlatList, View, Dimensions, TouchableOpacity, TextInput } from 'react-native'
-import React, {useState, useEffect, useCallback} from 'react'
+import { Text, Button, FlatList, View, TouchableOpacity, TextInput, Alert } from 'react-native'
+import React, {useState, useEffect, useCallback, useRef} from 'react'
 import styles from './DashBoard.styles.js'
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore';
@@ -9,13 +9,24 @@ import { useFocusEffect } from '@react-navigation/native';
 import FloatingButton from '../../components/FloatingButton/FloatingButton.js';
 import Modal from 'react-native-modal';
 
+// import CustomModal from '../../components/CustomModal/';
+// import TestModal from '../../components/TestModal';
+
 
 const DashBoard = () => {
 
   const dispatch = useDispatch()
 
-  const deviceHeight = Dimensions.get('window').height;
-  const deviceWidth = Dimensions.get('window').width;
+  const usernameRef = useRef();
+  const passwordRef = useRef();
+
+  const focusUsername = () => {
+    usernameRef.current.focus()
+  }
+  const focusPassword = () => {
+    passwordRef.current.focus()
+  }
+
   const profile = useSelector((state) => state.profile.value)
   console.log("PROFILEEEEEEEEEE: ", profile)
   const [user, setUser] = useState("");
@@ -26,7 +37,7 @@ const DashBoard = () => {
   
   const [modalVisible, setModalVisible] = useState(false)
   
-  const onSubmit = async () => {
+  const getRecords = async () => {
     let i;
     try {
       const notes = await firestore().collection('profiles').doc(profile).collection('records').get();
@@ -57,7 +68,7 @@ const DashBoard = () => {
 
   useFocusEffect(
     useCallback(() => {
-      onSubmit();
+      getRecords();
     }, [])
   )
 
@@ -84,71 +95,118 @@ const DashBoard = () => {
   };      
 
   const handleSave = () => {
-    console.log("Platform: ", newPlatformName)
-    console.log("User: ", newUserName)
-    console.log("Password: ", newPassword)
+    if (newPlatformName && newUserName && newPassword) {
+      console.log("Platform: ", newPlatformName)
+      console.log("User: ", newUserName)
+      console.log("Password: ", newPassword)
 
-    firestore().collection("profiles").doc(profile).collection('records').add({
-      platform: newPlatformName,
-      account: newUserName,
-      pass: newPassword
-    })
-    setModalVisible(false);
-    onSubmit();
+      firestore().collection("profiles").doc(profile).collection('records').add({
+        platform: newPlatformName,
+        account: newUserName,
+        pass: newPassword
+      })
+      setModalVisible(false);
+      setNewPlatformName("")
+      setNewUserName("")
+      setNewPassword("")
+      getRecords()
+    } else {
+      Alert.alert("Error", "Make sure you have filled all of the fields.")
 
-
-
-
+    }
   }
+
   
   const render = ({item}) => {
     // console.log("LANNNN bu ne ", item.data())
     return(
-      <Viewall data={item} />
+      <Viewall data={item} refresh={getRecords} />
     )
+  }
+
+  // const yazdir = () => {
+  //   return(
+  //     <View style={styles.modal.main}>
+  //               <Text style={styles.modal.title}>Add New Record</Text>
+  //               <Text style={styles.modal.label}>Platform:</Text>
+  //               <TextInput style={styles.modal.input} placeholder='Enter Platform name ' value={newPlatformName} onChangeText={setNewPlatformName} />
+  //               <Text style={styles.modal.label}>User:</Text>
+  //               <TextInput style={styles.modal.input} placeholder='Enter user name ' value={newUserName} onChangeText={setNewUserName} />
+  //               <Text style={styles.modal.label}>Password:</Text>
+  //               <TextInput style={styles.modal.input} placeholder='Enter password ' value={newPassword} onChangeText={setNewPassword} />
+
+  //               <View style={styles.modal.buttonView}>
+  //                 <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} >
+  //                   <Text style={styles.modal.buttonText}>Cancel</Text>
+  //                 </TouchableOpacity>
+
+  //                 <TouchableOpacity onPress={handleSave} >
+  //                   <Text style={styles.modal.buttonText}>Add</Text>
+  //                 </TouchableOpacity>
+
+  //               </View>
+
+  //             </View>
+  //   )
+  // }
+
+  const handleCancel = () => {
+    setModalVisible(!modalVisible)
+    setNewPlatformName("")
+    setNewUserName("")
+    setNewPassword("")
   }
 
   return (
     <View style={styles.main}>
       <View>
-        <Text style={{textAlign:'center', fontWeight:'bold', fontSize:30,color:'orange'}}>DASHBOARD</Text>
+        <Text style={styles.title}>DASHBOARD</Text>
         {/* <Text>User: {user} </Text> */}
-        <Text>Active Profile: {profile} </Text>
+        <Text>Active User: {user} </Text>
+        <Text>Chosen Profile: {profile} </Text>
         <Button title='LOGOUT' onPress={signOut} />
-        <Button title='SUBMIT' color={"red"} onPress={onSubmit} />
+        <Button title='SUBMIT' color={"red"} onPress={getRecords} />
         
         {data.length > 0 ? <FlatList data={data} renderItem={render} /> : <Text> No entries found</Text>}
       </View>
       
       <View style={styles.floatingButtonView}>
-        <FloatingButton pressAction={() => setModalVisible(!modalVisible)}  title={"Add"}/>
+        <FloatingButton pressAction={() => {
+          setModalVisible(!modalVisible)
+          console.log("modal visible status: ", modalVisible)
+          }}  title={"Add"}/>
       </View>
+
+
+      {/* <CustomModal isVisible={modalVisible} content={yazdir()} onClose={() => setModalVisible(!modalVisible)} /> */}
+
+      {/* {modalVisible && <TestModal />} */}
       
       <Modal 
               isVisible={modalVisible}
               statusBarTranslucent={true}
-              onBackButtonPress={() => setModalVisible(!modalVisible)}
-              onBackdropPress={() => setModalVisible(!modalVisible)}
+              onBackButtonPress={handleCancel}
+              onBackdropPress={handleCancel}
               animationType="fade"
               transparent={true}
               >
               
-              <View style={{alignSelf:'center', width:deviceWidth * 0.7 , height:deviceHeight * 0.33, backgroundColor:'white',padding:5}}>
-                <Text style={{textAlign:'center', fontWeight:'bold',fontSize:20,color:'red',marginTop:0,top:0}}>Add New Profile</Text>
-                <Text>Platform:</Text>
-                <TextInput style={{borderWidth:1,borderRadius:2,padding:3,margin:5}} placeholder='Enter Platform name ' value={newPlatformName} onChangeText={setNewPlatformName} />
-                <Text>User:</Text>
-                <TextInput style={{borderWidth:1,borderRadius:2,padding:3,margin:5}} placeholder='Enter user name ' value={newUserName} onChangeText={setNewUserName} />
-                <Text>Password:</Text>
-                <TextInput style={{borderWidth:1,borderRadius:2,padding:3,margin:5}} placeholder='Enter password ' value={newPassword} onChangeText={setNewPassword} />
+              <View style={styles.modal.main}>
+                <Text style={styles.modal.title}>Add New Record</Text>
+                <Text style={styles.modal.label}>Platform:</Text>
+                <TextInput returnKeyType="next" accessible={false} accessibilityLabel="Input Platform Name" style={styles.modal.input} placeholder='Enter Platform name ' value={newPlatformName} onChangeText={setNewPlatformName} onSubmitEditing={focusUsername} />
+                <Text style={styles.modal.label}>User:</Text>
+                <TextInput returnKeyType="next" accessible={true} accessibilityLabel="Input User Name" ref={usernameRef} style={styles.modal.input} placeholder='Enter user name ' value={newUserName} onChangeText={setNewUserName} onSubmitEditing={focusPassword} />
+                <Text style={styles.modal.label}>Password:</Text>
+                <TextInput returnKeyType="done" accessible={true} accessibilityLabel="Input Password" ref={passwordRef} style={styles.modal.input} placeholder='Enter password ' value={newPassword} onChangeText={setNewPassword} onSubmitEditing={handleSave} />
 
-                <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
-                  <TouchableOpacity onPress={() => console.log("Cancel")} style={{alignItems:'flex-end'}}>
-                    <Text style={{fontWeight:'bold',marginRight:15, borderWidth:1,borderRadius:10,padding:5,backgroundColor:'red',color:'white'}}>Cancel</Text>
+                <View style={styles.modal.buttonView}>
+                  <TouchableOpacity onPress={handleCancel} >
+                    <Text style={styles.modal.buttonText}>Cancel</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={handleSave} style={{alignItems:'flex-end'}}>
-                    <Text style={{fontWeight:'bold',marginRight:15, borderWidth:1,borderRadius:10,padding:5,paddingHorizontal:15,backgroundColor:'green',color:'white'}}>Add</Text>
+                  <TouchableOpacity returnKeyType="send" accessible={true} accessibilityLabel="Input Password" onPress={handleSave} >
+                    <Text style={styles.modal.buttonText}>Add</Text>
                   </TouchableOpacity>
 
                 </View>

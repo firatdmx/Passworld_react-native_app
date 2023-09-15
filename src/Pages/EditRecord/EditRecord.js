@@ -9,7 +9,7 @@ import { useFocusEffect } from '@react-navigation/native';
 const EditRecord = ({navigation}) => {
     const [data, setData] = useState(null);
 
-const updateMethod = async () => {
+    const updateMethod = async () => {
     const certain = await firestore().collection('profiles').doc(profileValue).collection('records').doc(recordIDValue)
     .update({
         platform: platform,
@@ -65,23 +65,22 @@ const updateMethod = async () => {
 
     return (
         <SafeAreaView>
-            <Text>Profile value → {profileValue}</Text>
-            <Text>recordIDValue value → {recordIDValue}</Text>
-            <Button title='GETIRRR' onPress={getirrr} />
-
             {data && (
                 <View>
-
+                    <Text style={styles.title}>Edit Record</Text>
+                    <Text style={styles.profile}>Active Profile: {profileValue}</Text>
+                    {/* <Text>recordIDValue value → {recordIDValue}</Text> */}
                     <Text>Platform: </Text> 
-                    <TextInput style={{borderWidth:1,margin:10, marginTop:5}} value={platform} onChangeText={setPlatform} />
+                    <TextInput style={styles.input} value={platform} onChangeText={setPlatform} />
 
                     <Text>Account: </Text> 
-                    <TextInput style={{borderWidth:1,margin:10, marginTop:5}} value={account} onChangeText={setAccount} />
+                    <TextInput style={styles.input}  value={account} onChangeText={setAccount} />
 
                     <Text>Password: </Text>
-                    <TextInput style={{borderWidth:1,margin:10, marginTop:5}} value={password} onChangeText={setPassword} />
+                    <TextInput style={styles.input}  value={password} onChangeText={setPassword} />
 
-                    <Button title={"SAVE"} onPress={updateMethod} />
+                    <Button title='Reset' onPress={getirrr} color="red" />
+                    <Button title="Save" onPress={updateMethod} />
                 </View>
             ) }
         </SafeAreaView>
