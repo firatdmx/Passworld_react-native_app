@@ -5,6 +5,6 @@ import setRecordID from '../features/recordID/recordIDSlice'
 export const store = configureStore({
   reducer: {
     profile: setProfile,
-    recordID: setRecordID
+    recordID: setRecordID,
   },
 })

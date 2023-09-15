@@ -1,29 +1,28 @@
+import "react-native-gesture-handler"
 import React from "react";
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AuthPage from "./Pages/Auth";
-import DashBoardPage from "./Pages/DashBoard";
-import ProfilesPage from "./Pages/Profiles";
-import EditRecordPage from "./Pages/EditRecord";
+
+// import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import { createDrawerNavigator } from '@react-navigation/drawer';
+// import DrawerLeft from "./src/components/DrawerLeft";
+
+// const Drawer = createDrawerNavigator();
+
 
 import  {store} from "./src/app/store"
 import { Provider } from 'react-redux'
+import Router from "./src/Router";
 
-const Stack = createNativeStackNavigator();
+// const Stack = createNativeStackNavigator();
+
 
 const App = () => {
-    return(
-        <Provider store={store}>
-            <NavigationContainer>
-                <Stack.Navigator>
-                    <Stack.Screen name="Home" component={AuthPage} options={{headerShown:false}} />
-                    <Stack.Screen name="Profiles" component={ProfilesPage} options={{headerShown:false}} />
-                    <Stack.Screen name="Dashboard" component={DashBoardPage} options={{headerShown:false}} />
-                    <Stack.Screen name="EditRecord" component={EditRecordPage} options={{headerShown:false}} />
-                </Stack.Navigator>
-            </NavigationContainer>
-        </Provider>
-    );
-}
+  return (
+    <Provider store={store}>
+      <Router />
+    </Provider>
+  );
+};
 
 export default App;
+
+

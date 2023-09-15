@@ -2,12 +2,9 @@ import { SafeAreaView, Text,Button, FlatList, View, TextInput, TouchableOpacity,
 import React, {useState, useEffect, useCallback, BackHandler} from 'react'
 import styles from './Profiles.styles.js'
 import firestore from '@react-native-firebase/firestore';
-import ViewProfiles from '../../src/components/ViewProfiles/ViewProfiles.js';
+import ViewProfiles from '../../components/ViewProfiles/ViewProfiles.js';
 import Modal from 'react-native-modal';
 import { useFocusEffect } from '@react-navigation/native';
-
-
-
 
 const Profiles = ({navigation}) => {
 
@@ -94,8 +91,6 @@ const Profiles = ({navigation}) => {
 
     return (
         <SafeAreaView>
-          
-          
 
             <Text 
               style={{textAlign:'center', fontSize:30, color:'orange', fontWeight:'bold',textShadowColor: 'rgba(0, 0, 0, 0.75)', 
@@ -143,7 +138,7 @@ const Profiles = ({navigation}) => {
               transparent={true}
               >
               
-              <View style={{alignSelf:'center', width:deviceWidth * 0.6 , height:deviceHeight * 0.2, backgroundColor:'white', padding:5}}>
+              <View style={{alignSelf:'center', width:deviceWidth * 0.6 , height:deviceHeight * 0.25, backgroundColor:'white', padding:5}}>
                 <Text style={{textAlign:'center', fontWeight:'bold',fontSize:20,color:'red',marginTop:0,top:0}}>Are you sure?</Text>
                     <Text>To delete "{newProfileName}"" profile enter <Text style={{fontWeight:"bold"}}>"{newProfileName}"</Text> into the box below and confirm.</Text>
                     <TextInput style={{borderWidth:1, width:"95%", height:"28%", margin:10,padding:10}} value={verificationText} onChangeText={setVerificationText} />

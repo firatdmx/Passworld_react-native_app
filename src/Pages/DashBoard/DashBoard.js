@@ -3,14 +3,17 @@ import React, {useState, useEffect, useCallback} from 'react'
 import styles from './DashBoard.styles.js'
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore';
-import Viewall from '../../src/components/Viewall/Viewall.js';
-import { useSelector } from 'react-redux';
+import Viewall from '../../components/Viewall/Viewall.js';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
-import FloatingButton from '../../src/components/FloatingButton/FloatingButton.js';
+import FloatingButton from '../../components/FloatingButton/FloatingButton.js';
 import Modal from 'react-native-modal';
 
 
-const DashBoard = ({navigation}) => {
+const DashBoard = () => {
+
+  const dispatch = useDispatch()
+
   const deviceHeight = Dimensions.get('window').height;
   const deviceWidth = Dimensions.get('window').width;
   const profile = useSelector((state) => state.profile.value)
@@ -47,10 +50,7 @@ const DashBoard = ({navigation}) => {
     getCurrentUser()
     if (getCurrentUser() == false) {
       console.log("LOGGED doesnt exist");
-      navigation.navigate("Home");
     }
-
-    // onSubmit();
 
   }, [])
 
@@ -62,13 +62,12 @@ const DashBoard = ({navigation}) => {
   )
 
 
-  
-
   const signOut = () => {
     auth().signOut() 
                 .then(res => {
                   console.log('successfully logged out: ', res)
-                  navigation.navigate('Home')
+                  dispatch(logout())
+
                 }) 
                 .catch(err => console.log('logout hata olustu: ', err))     }  
 
@@ -113,8 +112,8 @@ const DashBoard = ({navigation}) => {
     <View style={styles.main}>
       <View>
         <Text style={{textAlign:'center', fontWeight:'bold', fontSize:30,color:'orange'}}>DASHBOARD</Text>
-        <Text>User: {user} </Text>
-        <Text>Selected Profile: {profile} </Text>
+        {/* <Text>User: {user} </Text> */}
+        <Text>Active Profile: {profile} </Text>
         <Button title='LOGOUT' onPress={signOut} />
         <Button title='SUBMIT' color={"red"} onPress={onSubmit} />
         

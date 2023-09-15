@@ -15,18 +15,6 @@ export default styles = StyleSheet.create({
     slogan: {
         fontWeight: 'bold', fontSize: 30, color: 'black'
     },
-    buttonS: {
-        padding: 15,
-        marginHorizontal: 10,
-        marginTop: 10,
-        backgroundColor: 'gray',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10,
-    },
-    buttonSText: {
-        color: 'white', fontSize: 20, fontWeight: 'bold'
-    },
     textinp: {
         flex: 1, margin: 5, borderBottomWidth: 1
     },
