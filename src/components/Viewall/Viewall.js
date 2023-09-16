@@ -82,9 +82,9 @@ const Viewall = ({data, refresh}) => {
         {/* ******************* LEFT SIDE START ******************* */}
         <View style={styles.leftHandView}>
             <View style={styles.avatarAndInfo}>
-                <View style={styles.avatar}>
+                <View style={styles.avatarContainer}>
                     <Pressable onLongPress={handleDeleteAlert}>
-                        <Text style={styles.avatarChar}>{veri['platform'][0]}{' '}</Text>
+                        <Text style={styles.avatarChar}>{veri['platform'][0]}</Text>
                     </Pressable>
                 </View>
                 <View style={styles.infoContainer}>

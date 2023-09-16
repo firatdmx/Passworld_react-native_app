@@ -116,8 +116,14 @@ const Profiles = () => {
               style={styles.title}>
                 Choose a profile
             </Text>
+            <FlatList
+              numColumns={2}
+              data={data}
+              renderItem={render}
+              key={data}
+              />
 
-            <FlatList data={data} renderItem={render} />
+            
             <FloatingButton title={"+"} pressAction={toggleProfileAddModal} />
 
             <Modal 
@@ -141,7 +147,7 @@ const Profiles = () => {
                     <Text style={styles.addModal.cancelBtnText}>Cancel</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => addProfile(newProfileName)} >
+                  <TouchableOpacity onPress={() => addProfile(newProfileName.toUpperCase())} >
                     <Text style={styles.addModal.addBtnText}>Add</Text>
                   </TouchableOpacity>
 
@@ -171,7 +177,7 @@ const Profiles = () => {
                     <Text style={styles.delModal.cancelBtnText}>Cancel</Text>
                   </Pressable>
 
-                  <Pressable onPress={() => handleProfileDeleteAction(selectedProfile)} style={styles.delModal.btnProps}>
+                  <Pressable onPress={() => handleProfileDeleteAction(selectedProfile.toUpperCase())} style={styles.delModal.btnProps}>
                     <Text style={styles.delModal.confirmBtnText}>Confirm</Text>
                   </Pressable>
 

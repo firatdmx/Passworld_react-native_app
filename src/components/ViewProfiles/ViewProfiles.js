@@ -1,5 +1,5 @@
-import { Pressable, View, Text } from 'react-native'
 import React from 'react'
+import { Pressable, View, Text } from 'react-native'
 import styles from './ViewProfiles.styles.js'
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
@@ -24,8 +24,8 @@ const ViewProfiles = ({profileName, showProfileDeleteModal}) => {
 
         <View>
             <View style={styles.main}>
-            <Text style={styles.letter}>{profileName[0].toUpperCase()}</Text>
-            <Text style={styles.title}>{profileName.toUpperCase()}</Text>
+                <Text style={styles.letter}>{profileName[0].toUpperCase()}</Text>
+                <Text style={styles.title}>{profileName.toUpperCase()}</Text>
             </View>
 
         </View>

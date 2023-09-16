@@ -9,7 +9,7 @@ export default styles = StyleSheet.create({
   leftHandView: {
     flex: 1,
   },
-  avatar: {
+  avatarContainer: {
     width: 60,
     height: 60,
     justifyContent: 'center',
@@ -20,7 +20,7 @@ export default styles = StyleSheet.create({
   },
   avatarChar: {
     fontWeight: 'bold',
-    fontSize: 40,
+    fontSize: 50,
     color: 'white',
   },
   avatarAndInfo: {

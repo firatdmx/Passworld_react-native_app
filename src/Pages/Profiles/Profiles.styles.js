@@ -4,7 +4,7 @@ const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
 
 export default styles = StyleSheet.create({
-    main: {flex:1,},
+    main: {flex:1,alignItems:'center'},
     title: {textAlign:'center', fontSize:30, color:'orange', fontWeight:'bold',textShadowColor: 'rgba(0, 0, 0, 0.75)', 
     textShadowOffset: {width: -1, height: 1}, textShadowRadius: 10},
     addModal : {
