@@ -1,40 +1,71 @@
 import {StyleSheet} from 'react-native';
 
 export default styles = StyleSheet.create({
-    mainView:{
-        borderWidth:1,
-        backgroundColor:'lightgray', 
-        marginHorizontal:10, 
-        marginVertical:5, 
-        borderRadius:10
+  container: {
+    flexDirection: 'row',
+    margin: 5,
+    padding: 0,
+  },
+  leftHandView: {
+    flex: 1,
+  },
+  avatar: {
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
+    backgroundColor: 'blue',
+    marginRight: 12,
+  },
+  avatarChar: {
+    fontWeight: 'bold',
+    fontSize: 40,
+    color: 'white',
+  },
+  avatarAndInfo: {
+    flexDirection: 'row',
+    alignItems:'center',
+  },
+  infoContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  editBtn: {
+    paddingHorizontal:20,
+  },
+  editBtnText:{
+    color:'darkblue',
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+  showBtnText:{
+    color:'brown',
+    fontWeight: 'bold',
+    fontSize: 20,
+    marginRight:10
+  },
+  platformText: {
+    alignSelf: 'flex-start',
+    fontWeight: 'bold',
+    color: 'red',
+    fontSize: 19,
+    marginBottom: 12,
+  },
+    accountText: {
+      fontWeight: 'bold',
+      color: 'black',
+      fontSize: 16,
     },
-    title:{
-        padding:0,
-        borderTopStartRadius:10,
-        borderTopEndRadius:10,
-        backgroundColor:'#f0f0f0',
-        
-    },
-    titleText: {
-        fontWeight:"bold", 
-        color:'red',
-        fontSize:16,
-        lineHeight:16
-    },
-    rowView: {
-        flexDirection:"row",
-        marginBottom:0
-    },
-    accountView:{ 
-        marginLeft:10
-    },
-    accountText:{
-        fontWeight:"bold", 
-        color:'black',
-        fontSize:16
-    },
-    textText: {
-        fontSize:16, 
-        color:'darkblue'
-    }
-})
+    passwdText: {
+    fontSize: 16,
+    color: 'darkblue',
+    fontWeight:'600'
+  },
+});

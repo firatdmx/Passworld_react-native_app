@@ -17,10 +17,14 @@ const DashBoard = () => {
 
   const dispatch = useDispatch()
 
+  const platformRef = useRef();
   const usernameRef = useRef();
   const passwordRef = useRef();
 
 
+  const focusPlatformName = () => {
+    platformRef.current.focus()
+  }
   const focusUsername = () => {
     usernameRef.current.focus()
   }
@@ -113,7 +117,7 @@ const DashBoard = () => {
   const render = ({item}) => {
     // console.log("LANNNN bu ne ", item.data())
     return(
-      <Viewall data={item} refresh={getRecords} />
+      <Viewall data={item} refresh={getRecords}/>
     )
   }
 
@@ -150,6 +154,12 @@ const DashBoard = () => {
     setNewPassword("")
   }
 
+  const separator = () => {
+    return(
+      <View style={{borderBottomWidth:0,borderStyle:'dotted'}} />
+    )
+  }
+
   return (
     <View style={styles.main}>
       <View>
@@ -161,7 +171,7 @@ const DashBoard = () => {
         {/* bunu drawera ekle */}
         <Button title='LOGOUT' onPress={signOut} />
         
-        {data.length > 0 ? <FlatList data={data} renderItem={render} /> : <Text> No entries found</Text>}
+        {data.length > 0 ? <FlatList data={data} renderItem={render} ItemSeparatorComponent={separator} /> : <Text> No entries found</Text>}
       </View>
       
       <View style={styles.floatingButtonView}>
@@ -183,16 +193,51 @@ const DashBoard = () => {
               onBackdropPress={handleCancel}
               animationType="slide"
               transparent={true}
+              hardwareAccelerated
+              onShow={focusPlatformName}
               >
               
               <View style={styles.modal.main}>
                 <Text style={styles.modal.title}>Add New Record</Text>
+                
                 <Text style={styles.modal.label}>Platform:</Text>
-                <TextInput returnKeyType="next" accessible={false} accessibilityLabel="Input Platform Name" style={styles.modal.input} placeholder='Enter Platform name ' value={newPlatformName} onChangeText={setNewPlatformName} onSubmitEditing={focusUsername} />
+                <TextInput 
+                  returnKeyType="next" 
+                  accessible={false} 
+                  accessibilityLabel="Input Platform Name"
+                  ref={platformRef}
+                  style={styles.modal.input} 
+                  placeholder='Enter Platform name ' 
+                  value={newPlatformName} 
+                  onChangeText={setNewPlatformName} 
+                  onSubmitEditing={focusUsername}
+                  />
+                
                 <Text style={styles.modal.label}>User:</Text>
-                <TextInput returnKeyType="next" accessible={true} accessibilityLabel="Input User Name" ref={usernameRef} style={styles.modal.input} placeholder='Enter user name ' value={newUserName} onChangeText={setNewUserName} onSubmitEditing={focusPassword} />
+                <TextInput 
+                  returnKeyType="next" 
+                  accessible={true} 
+                  accessibilityLabel="Input User Name" 
+                  ref={usernameRef}
+                  style={styles.modal.input} 
+                  placeholder='Enter user name ' 
+                  value={newUserName} 
+                  onChangeText={setNewUserName} 
+                  onSubmitEditing={focusPassword}
+                />
+                
                 <Text style={styles.modal.label}>Password:</Text>
-                <TextInput returnKeyType="done" accessible={true} accessibilityLabel="Input Password" ref={passwordRef} style={styles.modal.input} placeholder='Enter password ' value={newPassword} onChangeText={setNewPassword} onSubmitEditing={handleSave} />
+                <TextInput 
+                  returnKeyType="done"
+                  accessible={true} 
+                  accessibilityLabel="Input Password" 
+                  ref={passwordRef} 
+                  style={styles.modal.input} 
+                  placeholder='Enter password '
+                  value={newPassword}
+                  onChangeText={setNewPassword}
+                  onSubmitEditing={handleSave}
+                  />
 
                 <View style={styles.modal.buttonView}>
                   <TouchableOpacity onPress={handleCancel} >

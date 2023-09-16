@@ -1,5 +1,5 @@
-import { View, TextInput, Pressable, Alert } from 'react-native'
-import React from 'react'
+import { View, Pressable, Alert, Text } from 'react-native'
+import React, { useState } from 'react'
 import styles from './Viewall.styles.js'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +13,7 @@ const Viewall = ({data, refresh}) => {
     const navigation = useNavigation();
 
     const dispatch = useDispatch();
+    const [passVisible, setPassVisible] = useState(false)
 
     const profileValue = useSelector((state) => state.profile.value)
 
@@ -36,7 +37,7 @@ const Viewall = ({data, refresh}) => {
             .doc(recordID)
             .delete()
             .then(() => {
-                console.log("datayi bul" , data["_data"])
+                // console.log("datayi bul" , data["_data"])
                 const dt = data["_data"]
                 const msg = "["+ dt["platform"] + ":" + dt["account"]  + "] entry has been deleted."
                 Alert.alert("Success", msg)
@@ -62,33 +63,118 @@ const Viewall = ({data, refresh}) => {
           { cancelable: false }
         );
       };
+    
+    const toggleShow = () => {
+      setPassVisible(!passVisible)
+      console.log(passVisible)
+    }
 
+    const autoAsterisk = () => {
+      setTimeout(() => {
+        setPassVisible(false)
+      }, 1000);
+      return veri['pass']
+    }
 
     return (
-        <Pressable 
-            onPress={goToEditPage}
-            onLongPress={handleDeleteAlert}
-        >
+      <View style={styles.container}>
 
-        <View style={styles.mainView}>
-
-            <View style={styles.title}>
-                <TextInput editable={false} style={styles.titleText} value={veri["platform"]} />
-            </View>
-
-            <View style={styles.rowView}>
-                <View style={styles.accountView}>
-                    <TextInput editable={false} style={styles.accountText} value={veri["account"]}/>
+        {/* ******************* LEFT SIDE START ******************* */}
+        <View style={styles.leftHandView}>
+            <View style={styles.avatarAndInfo}>
+                <View style={styles.avatar}>
+                    <Pressable onLongPress={handleDeleteAlert}>
+                        <Text style={styles.avatarChar}>{veri['platform'][0]}{' '}</Text>
+                    </Pressable>
                 </View>
-
-                <View>
-                    <TextInput editable={false} style={styles.textText} value={veri["pass"]} />
+                <View style={styles.infoContainer}>
+                  <Text style={styles.platformText}>{veri['platform']}</Text>
+                  <Text style={styles.accountText}>{veri['account']} </Text>
+                  
+                  <Text style={styles.passwdText}>
+                    { passVisible? autoAsterisk() :  veri['pass'].slice(0,1) + "***" + veri['pass'].slice(-1) }
+                  </Text>
+                
                 </View>
             </View>
-
         </View>
-        </Pressable>
-    )
+        {/* ******************* LEFT SIDE END ******************* */}
+
+        {/* ******************* RIGHT SIDE START ******************* */}
+        <View style={styles.buttonContainer}>
+            <Pressable style={styles.editBtn} onPress={goToEditPage}>
+              <Text style={styles.editBtnText}>Edit</Text>
+            </Pressable>
+
+            <Pressable onPress={toggleShow}>
+              <Text style={styles.showBtnText}>Show</Text>
+            </Pressable>
+        </View>
+        {/* ******************* RIGHT SIDE END ******************* */}
+
+      </View>
+    );
+
 }
 
 export default Viewall;
+
+
+
+
+
+
+
+
+
+
+
+
+    // return (
+    //     <View style={{flexDirection:"row",borderWidth:1,margin:10,borderRadius:10}}>
+            
+    //         <View style={{flex:5}}>
+
+    //     <Pressable 
+    //         onPress={goToEditPage}
+    //         onLongPress={handleDeleteAlert}
+    //     >
+
+    //     <View style={styles.mainView}>
+
+    //         <View style={styles.title}>
+    //             <TextInput editable={false} style={styles.titleText} value={veri["platform"]} />
+    //         </View>
+
+    //         <View style={styles.rowView}>
+    //             <View style={styles.accountView}>
+    //                 <TextInput editable={false} style={styles.accountText} value={veri["account"]}/>
+    //             </View>
+
+    //             <View>
+    //                 <TextInput editable={false} style={styles.textText} value={veri["pass"]} />
+    //             </View>
+
+
+
+    //         </View>
+
+    //     </View>
+    //     </Pressable>
+    //     </View>
+                
+    //             <View style={{flex:1}}>
+
+    //                 <View style={{flex:2,backgroundColor:'transparent'}} >
+    //                     {/* burayi duzelt */}
+    //                 </View>
+                    
+    //                 <View style={{flex:1, backgroundColor:'lightgray',justifyContent:'center',borderBottomRightRadius:10}}>
+    //                     <Pressable onPress={() => console.log("TEST")}>
+    //                         <Text style={styles.showHideBtnText}>(  o  )</Text>
+    //                     </Pressable>
+    //                 </View>
+                    
+    //             </View>
+    //     </View>
+    // )

@@ -1,5 +1,5 @@
 import { SafeAreaView, Text, FlatList, View, TextInput, TouchableOpacity, Pressable, Alert } from 'react-native'
-import React, {useState, useEffect, useCallback} from 'react'
+import React, {useState, useEffect, useCallback, useRef} from 'react'
 import styles from './Profiles.styles.js'
 import firestore from '@react-native-firebase/firestore';
 import ViewProfiles from '../../components/ViewProfiles';
@@ -8,6 +8,12 @@ import { useFocusEffect } from '@react-navigation/native';
 import FloatingButton from '../../components/FloatingButton';
 
 const Profiles = () => {
+
+  const profileRef = useRef();
+
+  const focusProfileName = () => {
+    profileRef.current.focus()
+  }
     
     const [data, setData] = useState([])
     const [selectedProfile, setSelectedProfile] = useState("")
@@ -121,12 +127,14 @@ const Profiles = () => {
               onBackdropPress={handleModalCancel}
               animationType="fade"
               transparent={true}
+              hardwareAccelerated
+              onShow={focusProfileName}
               >
               
               <View style={styles.addModal.main}>
                 <Text style={styles.addModal.title}>Add New Profile</Text>
                 <Text>Profile Name:</Text>
-                <TextInput style={styles.addModal.textinput} placeholder='Enter a new profile name: ' value={newProfileName} onChangeText={setNewProfileName} />
+                <TextInput ref={profileRef} style={styles.addModal.textinput} placeholder='Enter a new profile name: ' value={newProfileName} onChangeText={setNewProfileName} />
 
                 <View style={styles.addModal.buttonsView} >
                   <TouchableOpacity onPress={handleModalCancel} >
