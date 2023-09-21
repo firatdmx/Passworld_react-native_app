@@ -10,9 +10,11 @@ export default styles = StyleSheet.create({
         flex:1,
     },
     title: {
+        marginTop:10,
+        marginBottom:0,
         textAlign:'center', 
         fontWeight:'bold', 
-        fontSize:30,
+        fontSize:40,
         color:'orange'
     },
     modal: {

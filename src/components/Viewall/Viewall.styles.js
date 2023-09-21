@@ -30,6 +30,7 @@ export default styles = StyleSheet.create({
   infoContainer: {
     flex: 1,
     flexDirection: 'column',
+    justifyContent:'center',
     alignItems: 'flex-start',
   },
   buttonContainer: {

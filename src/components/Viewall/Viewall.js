@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux';
 import { setrecordID } from '../../features/recordID/recordIDSlice.js'
 import firestore from '@react-native-firebase/firestore';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 
 
@@ -87,12 +88,18 @@ const Viewall = ({data, refresh}) => {
                     </Pressable>
                 </View>
                 <View style={styles.infoContainer}>
+
                   <Text style={styles.platformText}>{veri['platform']}</Text>
-                  <Text style={styles.accountText}>{veri['account']} </Text>
+
+                  <View style={{flexDirection:"row",}}>
+                    <Text style={styles.accountText}>{veri['account']} </Text>
+                    <TouchableHighlight underlayColor={"orange"} style={{marginLeft:10, justifyContent:'center',alignItems:'center'}} onPress={() => console.log(veri['account'])}><Text style={{alignSelf:'center'}}>[c]</Text></TouchableHighlight> 
+                  </View>
                   
-                  <Text style={styles.passwdText}>
-                    { passVisible? autoAsterisk() :  veri['pass'].slice(0,1) + "***" + veri['pass'].slice(-1) }
-                  </Text>
+                  <View style={{flexDirection:"row",}}>
+                    <Text style={styles.passwdText}>{ passVisible? autoAsterisk() :  veri['pass'].slice(0,1) + "***" + veri['pass'].slice(-1) } </Text>
+                      <TouchableHighlight underlayColor={"orange"} style={{marginLeft:10, justifyContent:'center',alignItems:'center'}} onPress={() => console.log(veri['pass'])}><Text style={{alignSelf:'center'}}>[c]</Text></TouchableHighlight>
+                  </View>
                 
                 </View>
             </View>

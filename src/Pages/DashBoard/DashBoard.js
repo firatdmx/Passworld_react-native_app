@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import FloatingButton from '../../components/FloatingButton';
 import Modal from 'react-native-modal';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 // import CustomModal from '../../components/CustomModal/';
 // import TestModal from '../../components/TestModal';
@@ -39,6 +40,8 @@ const DashBoard = () => {
   const [newUserName, setNewUserName] = useState("")
   const [newPassword, setNewPassword] = useState("")
   
+  const [searchText, setSearchText] = useState("")
+
   const [modalVisible, setModalVisible] = useState(false)
   
   const getRecords = async () => {
@@ -154,6 +157,19 @@ const DashBoard = () => {
     <View style={styles.main}>
       <View>
         <Text style={styles.title}>DASHBOARD</Text>
+        
+        <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',backgroundColor:"red", margin:15, borderRadius:50,padding:5}}>
+
+          <View style={{flex:1,flexDirection:"column",}}>
+            <TextInput value={searchText} onChangeText={setSearchText} style={{padding:10,paddingLeft:15,paddingBottom:0,fontSize:17,color:"white",fontWeight:'bold',}} cursorColor={"white"} placeholderTextColor={"#ffffff99"} placeholder='SEARCH...' />
+            <View style={{borderTopWidth:1,borderTopColor:'#ffffff99',marginHorizontal:15}} />
+          </View>
+            <TouchableHighlight underlayColor="#ffffff80" onPress={() => setSearchText("")} style={{marginRight:10,borderRadius:50}}>
+              <Text style={{fontWeight:'bold',fontSize:20,color:'white'}}>(X)</Text>
+            </TouchableHighlight>
+
+
+        </View>
         
         {
         data.length > 0 ? 
