@@ -16,6 +16,8 @@ import {
 
 function CustomDrawerContent(props) {
 
+  const navigation = useNavigation();
+
   const [user, setUser] = useState("");
 
   const getCurrentUser = () => {
@@ -78,9 +80,9 @@ function CustomDrawerContent(props) {
       <Text style={{fontSize:17,textAlign:'center',fontWeight:'bold',color:'black'}}>User: <Text style={{color:'red'}}>{user}</Text></Text>
       <Text style={{fontSize:17,textAlign:'center',fontWeight:'bold',color:'black',marginBottom:10}}>Profile: {profile ? profile : "not selected"}</Text>
       <Button
-        title="Layn"
+        title="Profiles"
         color={"orange"}
-        onPress={() => Linking.openURL('https://mywebsite.com/help')}
+        onPress={() => navigation.navigate("Profiles")}
       />
       
       <View style={{flex:1,justifyContent:'flex-end',}}>

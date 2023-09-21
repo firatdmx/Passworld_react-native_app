@@ -1,4 +1,4 @@
-import { SafeAreaView, Text, FlatList, View, TextInput, TouchableOpacity, Pressable, Alert } from 'react-native'
+import { SafeAreaView, Text, FlatList, View, TextInput, TouchableOpacity, Pressable, Alert, ToastAndroid } from 'react-native'
 import React, {useState, useCallback, useRef} from 'react'
 import styles from './Profiles.styles.js'
 import firestore from '@react-native-firebase/firestore';
@@ -44,6 +44,7 @@ const Profiles = () => {
         profs.doc(profName).set({})
         setNewProfileName("")
         setProfileAddModalVisible(false);
+        ToastAndroid.show("The profile '"+newProfileName.toUpperCase()+"' has been created successfully!.", ToastAndroid.LONG)
         fetchProfiles();
       } else {
         Alert.alert("Error", "Profile name cannot be empty and cannot begin with a space character.")
@@ -86,7 +87,7 @@ const Profiles = () => {
 
 
       const handleProfileDeleteAction = (secprofil) => {
-        if (secprofil === verificationText) {
+        if (secprofil.toUpperCase() === verificationText.toUpperCase()) {
           firestore()
           .collection("profiles")
           .doc(secprofil)
@@ -95,7 +96,8 @@ const Profiles = () => {
             setDeleteModalVisible(false),
             fetchProfiles(),
             setVerificationText(""),
-            Alert.alert("Success", "Profile has been deleted.")
+            // Alert.alert("Success", "Profile has been deleted.")
+            ToastAndroid.show("The profile '"+secprofil.toUpperCase()+"' has been deleted successfully!.", ToastAndroid.LONG)
           )
         } 
         else {

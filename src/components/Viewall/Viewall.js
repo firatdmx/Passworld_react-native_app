@@ -1,4 +1,4 @@
-import { View, Pressable, Alert, Text } from 'react-native'
+import { View, Pressable, Alert, Text, ToastAndroid } from 'react-native'
 import React, { useState } from 'react'
 import styles from './Viewall.styles.js'
 import { useNavigation } from '@react-navigation/native'
@@ -43,7 +43,8 @@ const Viewall = ({data, refresh}) => {
                 // console.log("datayi bul" , data["_data"])
                 const dt = data["_data"]
                 const msg = "["+ dt["platform"] + ":" + dt["account"]  + "] entry has been deleted."
-                Alert.alert("Success", msg)
+                // Alert.alert("Success", msg)
+                ToastAndroid.show(msg, ToastAndroid.LONG)
                 refresh()
             });
     }
@@ -81,6 +82,7 @@ const Viewall = ({data, refresh}) => {
 
     const copyToClipboard = (textToCopy) => {
       Clipboard.setString(textToCopy)
+      ToastAndroid.show("Copied to the clipboard!", ToastAndroid.SHORT)
       }
 
 

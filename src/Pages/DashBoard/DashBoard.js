@@ -1,4 +1,4 @@
-import { Text, Button, FlatList, View, TouchableOpacity, TextInput, Alert } from 'react-native'
+import { Text, Button, FlatList, View, TouchableOpacity, TextInput, Alert, ToastAndroid } from 'react-native'
 import React, {useState, useCallback, useRef, useEffect} from 'react'
 import styles from './DashBoard.styles.js'
 import auth from '@react-native-firebase/auth'
@@ -108,6 +108,7 @@ const DashBoard = () => {
         pass: newPassword
       })
       setModalVisible(false);
+      ToastAndroid.show("New '"+newPlatformName+"' record has been added successfully.", ToastAndroid.LONG)
       setNewPlatformName("")
       setNewUserName("")
       setNewPassword("")
