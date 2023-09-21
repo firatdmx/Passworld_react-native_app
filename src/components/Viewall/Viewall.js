@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setrecordID } from '../../features/recordID/recordIDSlice.js'
 import firestore from '@react-native-firebase/firestore';
 import { TouchableHighlight } from 'react-native-gesture-handler';
+import Clipboard from '@react-native-clipboard/clipboard';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 
@@ -76,6 +78,12 @@ const Viewall = ({data, refresh}) => {
       return veri['pass']
     }
 
+
+    const copyToClipboard = (textToCopy) => {
+      Clipboard.setString(textToCopy)
+      }
+
+
     return (
       <View style={styles.container}>
 
@@ -93,12 +101,21 @@ const Viewall = ({data, refresh}) => {
 
                   <View style={{flexDirection:"row",}}>
                     <Text style={styles.accountText}>{veri['account']} </Text>
-                    <TouchableHighlight underlayColor={"orange"} style={{marginLeft:10, justifyContent:'center',alignItems:'center'}} onPress={() => console.log(veri['account'])}><Text style={{alignSelf:'center'}}>[c]</Text></TouchableHighlight> 
+                    <TouchableHighlight underlayColor={"white"} style={{marginLeft:5, justifyContent:'center',alignItems:'center',borderRadius:10}} onPress={() => copyToClipboard(veri['account'])}>
+                        <View>
+                          <Icon  style={{marginRight:0}} name={"content-copy"} color={'black'} size={18} />
+                        </View>
+                      </TouchableHighlight>
+
                   </View>
                   
                   <View style={{flexDirection:"row",}}>
                     <Text style={styles.passwdText}>{ passVisible? autoAsterisk() :  veri['pass'].slice(0,1) + "***" + veri['pass'].slice(-1) } </Text>
-                      <TouchableHighlight underlayColor={"orange"} style={{marginLeft:10, justifyContent:'center',alignItems:'center'}} onPress={() => console.log(veri['pass'])}><Text style={{alignSelf:'center'}}>[c]</Text></TouchableHighlight>
+                      <TouchableHighlight underlayColor={"white"} style={{marginLeft:5, justifyContent:'center',alignItems:'center',borderRadius:10}} onPress={() => copyToClipboard(veri['pass'])}>
+                        <View>
+                          <Icon  style={{marginRight:0}} name={"content-copy"} color={'black'} size={18} />
+                        </View>
+                      </TouchableHighlight>
                   </View>
                 
                 </View>
@@ -109,11 +126,11 @@ const Viewall = ({data, refresh}) => {
         {/* ******************* RIGHT SIDE START ******************* */}
         <View style={styles.buttonContainer}>
             <Pressable style={styles.editBtn} onPress={goToEditPage}>
-              <Text style={styles.editBtnText}>Edit</Text>
+              <Icon style={{marginRight:0}} name={"lead-pencil"} color={'black'} size={18} />
             </Pressable>
 
             <Pressable onPress={toggleShow}>
-              <Text style={styles.showBtnText}>Show</Text>
+              <Icon style={{marginRight:5}} name={"eye"} color={'black'} size={18} />
             </Pressable>
         </View>
         {/* ******************* RIGHT SIDE END ******************* */}
@@ -124,12 +141,6 @@ const Viewall = ({data, refresh}) => {
 }
 
 export default Viewall;
-
-
-
-
-
-
 
 
 

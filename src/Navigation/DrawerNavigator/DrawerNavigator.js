@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import AppStack from '../AppStack';
 import auth from '@react-native-firebase/auth'
 import { useSelector } from 'react-redux';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 import {
@@ -84,9 +85,12 @@ function CustomDrawerContent(props) {
       
       <View style={{flex:1,justifyContent:'flex-end',}}>
         <Pressable style={{height:70,backgroundColor:'red',justifyContent:'center',alignItems:'center'}} onPress={signOut}>
-          <Text style={{fontSize:20,fontWeight:'bold',color:'white'}}>
-            LOGOUT
-          </Text>
+            <View style={{flexDirection:'row',alignItems:'center'}}>
+              <Icon style={{marginRight:10}} name={"logout"} color={'white'} size={30} />
+              <Text style={{fontSize:20,fontWeight:'bold',color:'white'}}>
+                LOGOUT
+              </Text>
+            </View>
         </Pressable>
       </View>
 

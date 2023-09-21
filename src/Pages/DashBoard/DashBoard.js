@@ -1,5 +1,5 @@
 import { Text, Button, FlatList, View, TouchableOpacity, TextInput, Alert } from 'react-native'
-import React, {useState, useCallback, useRef} from 'react'
+import React, {useState, useCallback, useRef, useEffect} from 'react'
 import styles from './DashBoard.styles.js'
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore';
@@ -9,6 +9,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import FloatingButton from '../../components/FloatingButton';
 import Modal from 'react-native-modal';
 import { TouchableHighlight } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/Feather';
 
 // import CustomModal from '../../components/CustomModal/';
 // import TestModal from '../../components/TestModal';
@@ -34,8 +35,9 @@ const DashBoard = () => {
 
   const profile = useSelector((state) => state.profile.value)
   // console.log("PROFILEEEEEEEEEE: ", profile)
-  const [user, setUser] = useState("");
+  // const [user, setUser] = useState("");
   const [data, setData] = useState([])
+  const [fullData, setFullData] = useState([])
   const [newPlatformName, setNewPlatformName] = useState("")
   const [newUserName, setNewUserName] = useState("")
   const [newPassword, setNewPassword] = useState("")
@@ -56,7 +58,7 @@ const DashBoard = () => {
       }
 
       setData(docsData)
-
+      setFullData(docsData)
 
     } catch (error) {
       console.error("Hata oluştu:", error);
@@ -66,17 +68,27 @@ const DashBoard = () => {
 
   useFocusEffect(
     useCallback(() => {
-      getCurrentUser();
       getRecords();
     }, [])
-  )
+    )
+
+    useEffect(() => {
+      getCurrentUser();
+      getRecords();
+
+      return () => {
+        getCurrentUser();
+        getRecords();
+      }
+    }, [])
+
 
 
   const getCurrentUser = () => {
     const user = auth().currentUser;
     if (user) {
       // console.log(user.email); //print active user
-      setUser(user.email)
+      // setUser(user.email)
       return true;
     } else {
       console.log('logged user not found');
@@ -153,6 +165,22 @@ const DashBoard = () => {
     )
   }
 
+  
+
+  const handleTextChange = (text) => {
+    if (text) {
+      setSearchText(text)
+      const filteredData = (fullData.filter(element => {
+        return element["_data"]["platform"].includes(searchText) || element["_data"]["account"].includes(searchText)
+      }))
+      setData(filteredData)
+    } else {
+      setSearchText(text)
+      setData(fullData)
+    }
+  }
+
+
   return (
     <View style={styles.main}>
       <View>
@@ -161,11 +189,11 @@ const DashBoard = () => {
         <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',backgroundColor:"red", margin:15, borderRadius:50,padding:5}}>
 
           <View style={{flex:1,flexDirection:"column",}}>
-            <TextInput value={searchText} onChangeText={setSearchText} style={{padding:10,paddingLeft:15,paddingBottom:0,fontSize:17,color:"white",fontWeight:'bold',}} cursorColor={"white"} placeholderTextColor={"#ffffff99"} placeholder='SEARCH...' />
+            <TextInput value={searchText} onChangeText={handleTextChange} style={{padding:10,paddingLeft:15,paddingBottom:0,fontSize:17,color:"white",fontWeight:'bold',}} cursorColor={"white"} placeholderTextColor={"#ffffff99"} placeholder='SEARCH...' />
             <View style={{borderTopWidth:1,borderTopColor:'#ffffff99',marginHorizontal:15}} />
           </View>
-            <TouchableHighlight underlayColor="#ffffff80" onPress={() => setSearchText("")} style={{marginRight:10,borderRadius:50}}>
-              <Text style={{fontWeight:'bold',fontSize:20,color:'white'}}>(X)</Text>
+            <TouchableHighlight underlayColor="#ffffff80" onPress={() => handleTextChange("")} style={{marginRight:10,borderRadius:50}}>
+              <Icon style={{marginRight:5}} name={"delete"} color={'white'} size={25} />
             </TouchableHighlight>
 
 
