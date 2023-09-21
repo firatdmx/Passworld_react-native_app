@@ -4,7 +4,7 @@ import styles from './DashBoard.styles.js'
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore';
 import Viewall from '../../components/Viewall';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import FloatingButton from '../../components/FloatingButton';
 import Modal from 'react-native-modal';
@@ -15,7 +15,6 @@ import Modal from 'react-native-modal';
 
 const DashBoard = () => {
 
-  const dispatch = useDispatch()
 
   const platformRef = useRef();
   const usernameRef = useRef();
@@ -69,15 +68,6 @@ const DashBoard = () => {
     }, [])
   )
 
-
-  const signOut = () => {
-    auth().signOut() 
-                .then(res => {
-                  // console.log('successfully logged out: ', res)
-                  dispatch(logout())
-
-                }) 
-                .catch(err => console.log('logout hata olustu: ', err))     }  
 
   const getCurrentUser = () => {
     const user = auth().currentUser;
@@ -164,20 +154,20 @@ const DashBoard = () => {
     <View style={styles.main}>
       <View>
         <Text style={styles.title}>DASHBOARD</Text>
-        {/* <Text>User: {user} </Text> */}
-        <Text>Active User: {user} </Text>
-        <Text>Chosen Profile: {profile} </Text>
-
-        {/* bunu drawera ekle */}
-        <Button title='LOGOUT' onPress={signOut} />
         
-        {data.length > 0 ? <FlatList data={data} renderItem={render} ItemSeparatorComponent={separator} /> : <Text> No entries found</Text>}
+        {
+        data.length > 0 ? 
+        <FlatList data={data} renderItem={render} ItemSeparatorComponent={separator} /> 
+        : 
+        <View style={{backgroundColor:"lightblue",height:30,justifyContent:'center'}}>
+          <Text style={{textAlign:'center',fontWeight:'bold',color:'black'}}> No entries found</Text>
+        </View>
+        }
       </View>
       
       <View style={styles.floatingButtonView}>
         <FloatingButton pressAction={() => {
-          setModalVisible(!modalVisible)
-          // console.log("modal visible status: ", modalVisible)
+          setModalVisible(true)
           }}  title={"+"}/>
       </View>
 
@@ -186,6 +176,15 @@ const DashBoard = () => {
 
       {/* {modalVisible && <TestModal />} */}
       
+{/*
+  __  __  ____  _____          _        
+ |  \/  |/ __ \|  __ \   /\   | |     
+ | \  / | |  | | |  | | /  \  | |     
+ | |\/| | |  | | |  | |/ /\ \ | |      
+ | |  | | |__| | |__| / ____ \| |____  
+ |_|  |_|\____/|_____/_/    \_\______|
+*/}
+
       <Modal 
               isVisible={modalVisible}
               statusBarTranslucent={false}

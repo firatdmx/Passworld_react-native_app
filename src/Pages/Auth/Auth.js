@@ -3,11 +3,13 @@ import React,{useState} from 'react'
 import styles from './Auth.styles.js'
 import auth from '@react-native-firebase/auth'
 import AuthButton from '../../components/AuthButton';
+import {setUserInfo} from '../../features/userInfo/userInfoSlice';
 
 
 const Auth = () => {
 
-  const [mail, setMail] = useState("dev@dev.com");
+  
+  const [mail, setMail] = useState("dev@dev.com");   //bunlar null olacak
   const [pass, setPass] = useState("123456");
 
   const mailpassExist = () => {
@@ -23,7 +25,7 @@ const Auth = () => {
   const signUp = () => {
         if(mailpassExist()) {
           auth().createUserWithEmailAndPassword(mail, pass) 
-                .then(res => console.log("successfull, " +res)) 
+                .then(res => console.log("signup successfull, " +res)) 
                 .catch(error => { console.log("hataaaaaaa ", error)  })  
         }
       }
@@ -33,25 +35,14 @@ const Auth = () => {
       if(mailpassExist()) {
         auth().signInWithEmailAndPassword(mail, pass) 
                     .then(res => (
-                      console.log("successfull, " +res)
+                      setUserInfo(res),
+                      console.log("abi res burada: ", res)
                     )
                       ) 
                     .catch(error => { console.log("hataaaaaaa ", error)  })  
         }
       }
    
-
-  const getCurrentUser = () => {
-        const user = auth().currentUser; 
-        if (user) {
-            // console.log(user)
-            // console.log(user.email)
-            return true
-        } else {
-            console.log("logged user not found")
-            return false
-        }
-        }
 
     return (
       <View style={styles.main}>

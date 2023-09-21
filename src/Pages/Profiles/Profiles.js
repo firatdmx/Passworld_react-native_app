@@ -1,15 +1,18 @@
 import { SafeAreaView, Text, FlatList, View, TextInput, TouchableOpacity, Pressable, Alert } from 'react-native'
-import React, {useState, useEffect, useCallback, useRef} from 'react'
+import React, {useState, useCallback, useRef} from 'react'
 import styles from './Profiles.styles.js'
 import firestore from '@react-native-firebase/firestore';
 import ViewProfiles from '../../components/ViewProfiles';
 import Modal from 'react-native-modal';
 import { useFocusEffect } from '@react-navigation/native';
 import FloatingButton from '../../components/FloatingButton';
+import { setProfile } from '../../features/profile/profileSlice.js'
+import { useDispatch } from 'react-redux';
 
 const Profiles = () => {
 
   const profileRef = useRef();
+  const dispatch = useDispatch();
 
   const focusProfileName = () => {
     profileRef.current.focus()
@@ -29,9 +32,9 @@ const Profiles = () => {
       setProfileAddModalVisible(!profileAddModalVisible);
     };
 
-    const toggleProfileDeleteModal = (gelenveri) => {
+    const toggleProfileDeleteModal = (profile_name) => {
       setDeleteModalVisible(!deleteModalVisible);
-      setSelectedProfile(gelenveri)
+      setSelectedProfile(profile_name)
 
     };
 
@@ -65,13 +68,10 @@ const Profiles = () => {
         }
       }
 
-    useEffect(() => {
-      fetchProfiles();
-    }, [])
-
     useFocusEffect(
       useCallback(
         () => {
+          dispatch(setProfile(null)) //remove profile selection
           fetchProfiles();
         },
         [],

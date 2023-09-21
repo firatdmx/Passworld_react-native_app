@@ -66,7 +66,6 @@ const Viewall = ({data, refresh}) => {
     
     const toggleShow = () => {
       setPassVisible(!passVisible)
-      console.log(passVisible)
     }
 
     const autoAsterisk = () => {
