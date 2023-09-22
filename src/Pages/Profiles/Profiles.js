@@ -111,6 +111,7 @@ const Profiles = () => {
       }
 
 
+
     return (
         <SafeAreaView style={styles.main}>
 
@@ -118,12 +119,19 @@ const Profiles = () => {
               style={styles.title}>
                 Choose a profile
             </Text>
+
+            {data.length != 0 ? 
             <FlatList
               numColumns={2}
               data={data}
               renderItem={render}
               key={data}
               />
+              :
+              <View>
+                <Text style={{color:'gray',fontWeight:'bold',fontSize:15}}>No profiles have been found...Please add a new profile.</Text>
+              </View>
+              }
 
             
             <FloatingButton title={"+"} pressAction={toggleProfileAddModal} />

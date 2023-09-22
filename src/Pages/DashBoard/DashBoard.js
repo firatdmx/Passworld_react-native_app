@@ -10,13 +10,15 @@ import FloatingButton from '../../components/FloatingButton';
 import Modal from 'react-native-modal';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
+import CryptoJS from 'react-native-crypto-js';
+import * as Keychain from 'react-native-keychain';
+
 
 // import CustomModal from '../../components/CustomModal/';
 // import TestModal from '../../components/TestModal';
 
 
 const DashBoard = () => {
-
 
   const platformRef = useRef();
   const usernameRef = useRef();
@@ -34,8 +36,6 @@ const DashBoard = () => {
   }
 
   const profile = useSelector((state) => state.profile.value)
-  // console.log("PROFILEEEEEEEEEE: ", profile)
-  // const [user, setUser] = useState("");
   const [data, setData] = useState([])
   const [fullData, setFullData] = useState([])
   const [newPlatformName, setNewPlatformName] = useState("")
@@ -43,19 +43,23 @@ const DashBoard = () => {
   const [newPassword, setNewPassword] = useState("")
   
   const [searchText, setSearchText] = useState("")
+  const [encKey, setEncKey] = useState("")
 
   const [modalVisible, setModalVisible] = useState(false)
   
-  const getRecords = async () => {
-    let i;
+  const getRecords = async (encrtipKey) => {
     try {
       const notes = await firestore().collection('profiles').doc(profile).collection('records').get();
       const docs = notes.docs
       let docsData = []
-      
-      for (i=0; i< docs.length; i++) {
-        docsData.push(docs[i])
-      }
+
+      docs.map((record) => {
+        const xdata = record['_data']
+        xdata["account"] = CryptoJS.AES.decrypt(xdata["account"], encrtipKey).toString(CryptoJS.enc.Utf8)
+        xdata["pass"] = CryptoJS.AES.decrypt(xdata["pass"], encrtipKey).toString(CryptoJS.enc.Utf8)
+        // console.log(record)
+        docsData.push(record)
+      })
 
       setData(docsData)
       setFullData(docsData)
@@ -66,19 +70,41 @@ const DashBoard = () => {
   }
 
 
+  const retrieveEncryptionKey = async () => {
+    try {
+      const result = await Keychain.getGenericPassword();
+      if (result) {
+        const encryptionKey = result.password;
+        setEncKey(encryptionKey)
+        // console.log('Retrieved encryption key:', encryptionKey);
+        getRecords(encryptionKey)
+        // return encryptionKey;
+      } else {
+        console.log('Encryption key not found.');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error retrieving encryption key:', error);
+      return null;
+    }
+  };
+
+
   useFocusEffect(
     useCallback(() => {
-      getRecords();
+      retrieveEncryptionKey();
+      // getRecords();
     }, [])
     )
 
     useEffect(() => {
       getCurrentUser();
-      getRecords();
+      retrieveEncryptionKey();
+      // getRecords();
 
       return () => {
         getCurrentUser();
-        getRecords();
+        // getRecords();
       }
     }, [])
 
@@ -98,32 +124,29 @@ const DashBoard = () => {
 
   const handleSave = () => {
     if (newPlatformName && newUserName && newPassword) {
-      // console.log("Platform: ", newPlatformName)
-      // console.log("User: ", newUserName)
-      // console.log("Password: ", newPassword)
-
+      const encryptedAcc = CryptoJS.AES.encrypt(newUserName, encKey).toString();
+      const encryptedPass = CryptoJS.AES.encrypt(newPassword, encKey).toString();
       firestore().collection("profiles").doc(profile).collection('records').add({
         platform: newPlatformName,
-        account: newUserName,
-        pass: newPassword
+        account: encryptedAcc,
+        pass: encryptedPass
       })
       setModalVisible(false);
       ToastAndroid.show("New '"+newPlatformName+"' record has been added successfully.", ToastAndroid.LONG)
       setNewPlatformName("")
       setNewUserName("")
       setNewPassword("")
-      getRecords()
+      retrieveEncryptionKey() //burayı düzeltmelisin dostum
     } else {
       Alert.alert("Error", "Make sure you have filled all of the fields.")
 
     }
   }
-
   
   const render = ({item}) => {
     // console.log("LANNNN bu ne ", item.data())
     return(
-      <Viewall data={item} refresh={getRecords}/>
+      <Viewall data={item} refresh={retrieveEncryptionKey}/>
     )
   }
 
@@ -182,10 +205,12 @@ const DashBoard = () => {
   }
 
 
+
   return (
     <View style={styles.main}>
       <View>
         <Text style={styles.title}>DASHBOARD</Text>
+        <Button title="test" onPress={() => console.log(encKey)} />
         
         <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',backgroundColor:"red", margin:15, borderRadius:50,padding:5}}>
 

@@ -10,22 +10,23 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
-
 const Viewall = ({data, refresh}) => {
-    const veri = data.data()
-    const navigation = useNavigation();
 
-    const dispatch = useDispatch();
-    const [passVisible, setPassVisible] = useState(false)
+  const veri = data.data()
 
-    const profileValue = useSelector((state) => state.profile.value)
+  const navigation = useNavigation();
 
-    const goToEditPage = () => {
-        // console.log("yo", data["id"])
-        const recordID = data["id"]
-        dispatch(setrecordID(recordID));
-        navigation.navigate("EditRecord", {recordID})
-    }
+  const dispatch = useDispatch();
+  const [passVisible, setPassVisible] = useState(false)
+
+  const profileValue = useSelector((state) => state.profile.value)
+
+  const goToEditPage = () => {
+      // console.log("yo", data["id"])
+      const recordID = data["id"]
+      dispatch(setrecordID(recordID));
+      navigation.navigate("EditRecord", {recordID})
+  }
 
     const cancelDelete = () => {
         return false
@@ -92,11 +93,11 @@ const Viewall = ({data, refresh}) => {
         {/* ******************* LEFT SIDE START ******************* */}
         <View style={styles.leftHandView}>
             <View style={styles.avatarAndInfo}>
-                <View style={styles.avatarContainer}>
                     <Pressable onLongPress={handleDeleteAlert}>
+                <View style={styles.avatarContainer}>
                         <Text style={styles.avatarChar}>{veri['platform'][0]}</Text>
-                    </Pressable>
                 </View>
+                    </Pressable>
                 <View style={styles.infoContainer}>
 
                   <Text style={styles.platformText}>{veri['platform']}</Text>
@@ -113,6 +114,7 @@ const Viewall = ({data, refresh}) => {
                   
                   <View style={{flexDirection:"row",}}>
                     <Text style={styles.passwdText}>{ passVisible? autoAsterisk() :  veri['pass'].slice(0,1) + "***" + veri['pass'].slice(-1) } </Text>
+                    {/* <Text style={styles.passwdText}>{ passVisible? autoAsterisk() :  decryptedPass.slice(0,1) + "***" + decryptedPass.slice(-1) } </Text> */}
                       <TouchableHighlight underlayColor={"white"} style={{marginLeft:5, justifyContent:'center',alignItems:'center',borderRadius:10}} onPress={() => copyToClipboard(veri['pass'])}>
                         <View>
                           <Icon  style={{marginRight:0}} name={"content-copy"} color={'black'} size={18} />
@@ -143,57 +145,3 @@ const Viewall = ({data, refresh}) => {
 }
 
 export default Viewall;
-
-
-
-
-
-
-    // return (
-    //     <View style={{flexDirection:"row",borderWidth:1,margin:10,borderRadius:10}}>
-            
-    //         <View style={{flex:5}}>
-
-    //     <Pressable 
-    //         onPress={goToEditPage}
-    //         onLongPress={handleDeleteAlert}
-    //     >
-
-    //     <View style={styles.mainView}>
-
-    //         <View style={styles.title}>
-    //             <TextInput editable={false} style={styles.titleText} value={veri["platform"]} />
-    //         </View>
-
-    //         <View style={styles.rowView}>
-    //             <View style={styles.accountView}>
-    //                 <TextInput editable={false} style={styles.accountText} value={veri["account"]}/>
-    //             </View>
-
-    //             <View>
-    //                 <TextInput editable={false} style={styles.textText} value={veri["pass"]} />
-    //             </View>
-
-
-
-    //         </View>
-
-    //     </View>
-    //     </Pressable>
-    //     </View>
-                
-    //             <View style={{flex:1}}>
-
-    //                 <View style={{flex:2,backgroundColor:'transparent'}} >
-    //                     {/* burayi duzelt */}
-    //                 </View>
-                    
-    //                 <View style={{flex:1, backgroundColor:'lightgray',justifyContent:'center',borderBottomRightRadius:10}}>
-    //                     <Pressable onPress={() => console.log("TEST")}>
-    //                         <Text style={styles.showHideBtnText}>(  o  )</Text>
-    //                     </Pressable>
-    //                 </View>
-                    
-    //             </View>
-    //     </View>
-    // )
