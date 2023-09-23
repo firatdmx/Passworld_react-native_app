@@ -21,6 +21,9 @@ const Viewall = ({data, refresh}) => {
 
   const profileValue = useSelector((state) => state.profile.value)
 
+  // const goToEditPage = () => {
+  //     edit(data["platform"], data["account"], data["pass"])
+  // }
   const goToEditPage = () => {
       // console.log("yo", data["id"])
       const recordID = data["id"]
@@ -86,7 +89,11 @@ const Viewall = ({data, refresh}) => {
       ToastAndroid.show("Copied to the clipboard!", ToastAndroid.SHORT)
       }
 
-
+// ██████  ███████ ███    ██ ██████  ███████ ██████  
+// ██   ██ ██      ████   ██ ██   ██ ██      ██   ██ 
+// ██████  █████   ██ ██  ██ ██   ██ █████   ██████  
+// ██   ██ ██      ██  ██ ██ ██   ██ ██      ██   ██ 
+// ██   ██ ███████ ██   ████ ██████  ███████ ██   ██ 
     return (
       <View style={styles.container}>
 
@@ -102,22 +109,21 @@ const Viewall = ({data, refresh}) => {
 
                   <Text style={styles.platformText}>{veri['platform']}</Text>
 
-                  <View style={{flexDirection:"row",}}>
+                  <View style={styles.accountRow}>
                     <Text style={styles.accountText}>{veri['account']} </Text>
-                    <TouchableHighlight underlayColor={"white"} style={{marginLeft:5, justifyContent:'center',alignItems:'center',borderRadius:10}} onPress={() => copyToClipboard(veri['account'])}>
+                    <TouchableHighlight underlayColor={"white"} style={styles.copyIcon} onPress={() => copyToClipboard(veri['account'])}>
                         <View>
-                          <Icon  style={{marginRight:0}} name={"content-copy"} color={'black'} size={18} />
+                          <Icon name={"content-copy"} color={'black'} size={18} />
                         </View>
                       </TouchableHighlight>
 
                   </View>
                   
-                  <View style={{flexDirection:"row",}}>
+                  <View style={styles.passRow}>
                     <Text style={styles.passwdText}>{ passVisible? autoAsterisk() :  veri['pass'].slice(0,1) + "***" + veri['pass'].slice(-1) } </Text>
-                    {/* <Text style={styles.passwdText}>{ passVisible? autoAsterisk() :  decryptedPass.slice(0,1) + "***" + decryptedPass.slice(-1) } </Text> */}
-                      <TouchableHighlight underlayColor={"white"} style={{marginLeft:5, justifyContent:'center',alignItems:'center',borderRadius:10}} onPress={() => copyToClipboard(veri['pass'])}>
+                      <TouchableHighlight underlayColor={"white"} style={styles.copyIcon} onPress={() => copyToClipboard(veri['pass'])}>
                         <View>
-                          <Icon  style={{marginRight:0}} name={"content-copy"} color={'black'} size={18} />
+                          <Icon name={"content-copy"} color={'black'} size={18} />
                         </View>
                       </TouchableHighlight>
                   </View>
@@ -130,11 +136,11 @@ const Viewall = ({data, refresh}) => {
         {/* ******************* RIGHT SIDE START ******************* */}
         <View style={styles.buttonContainer}>
             <Pressable style={styles.editBtn} onPress={goToEditPage}>
-              <Icon style={{marginRight:0}} name={"lead-pencil"} color={'black'} size={18} />
+              <Icon name={"lead-pencil"} color={'black'} size={18} />
             </Pressable>
 
             <Pressable onPress={toggleShow}>
-              <Icon style={{marginRight:5}} name={"eye"} color={'black'} size={18} />
+              <Icon style={styles.viewIcon} name={"eye"} color={'black'} size={18} />
             </Pressable>
         </View>
         {/* ******************* RIGHT SIDE END ******************* */}

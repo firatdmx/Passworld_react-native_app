@@ -69,4 +69,18 @@ export default styles = StyleSheet.create({
     color: 'darkblue',
     fontWeight:'600'
   },
+  copyIcon: {
+    marginLeft:5, justifyContent:'center',alignItems:'center',borderRadius:10
+  },
+  viewIcon:{
+    marginRight:5,
+  },
+  accountRow:{
+    flexDirection:"row"
+  },
+  passRow: {
+    flexDirection:"row"
+  }
+
+
 });

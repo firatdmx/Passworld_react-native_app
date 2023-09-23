@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import DashBoardPage from '../../Pages/DashBoard'
+import DashBoardPage from '../../Pages/PasswordVault'
 import ProfilesPage from '../../Pages/Profiles'
 import EditRecordPage from '../../Pages/EditRecord'
 

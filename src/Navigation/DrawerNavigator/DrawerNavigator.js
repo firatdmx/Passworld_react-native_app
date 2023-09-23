@@ -6,6 +6,7 @@ import AppStack from '../AppStack';
 import auth from '@react-native-firebase/auth'
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import styles from './DrawerNavigator.styles'
 
 
 import {
@@ -49,47 +50,30 @@ function CustomDrawerContent(props) {
                 }) 
                 .catch(err => console.log('logout hata olustu: ', err))     } 
 
-
+// ██████  ███████ ███    ██ ██████  ███████ ██████  
+// ██   ██ ██      ████   ██ ██   ██ ██      ██   ██ 
+// ██████  █████   ██ ██  ██ ██   ██ █████   ██████  
+// ██   ██ ██      ██  ██ ██ ██   ██ ██      ██   ██ 
+// ██   ██ ███████ ██   ████ ██████  ███████ ██   ██ 
   return (
-    <DrawerContentScrollView {...props} 
-      // style={{flex:1,backgroundColor:"red"}}
-      contentContainerStyle={{flex:1,paddingTop:"20%",}} 
-      >
-        
+    <DrawerContentScrollView {...props} contentContainerStyle={styles.drawerContentScroll} >        
       <DrawerItemList {...props} />
 
-      <View style={{
-    width: 90,
-    height: 90,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 50,
-    backgroundColor: 'orange',
-    borderWidth:1,
-    alignSelf:'center',
-    margin:10,
-  }}>
-                    <Pressable onLongPress={() => console.log("clicked avatar")}>
-                        <Text style={{flex:1,textAlign:'center',fontWeight:'bold',fontSize: 70,color: 'white'}}>
-                          {user && user[0].toUpperCase()}
-                        </Text>
-                    </Pressable>
-      </View>
+        <View style={styles.avatarContainer}>
+          <Pressable onLongPress={() => console.log("clicked avatar")}>
+            <Text style={styles.avatarChar}>{user && user[0].toUpperCase()}</Text>
+          </Pressable>
+        </View>
 
+        <Text style={styles.infoText}>User: <Text style={{color:'red'}}>{user}</Text></Text>
+        <Text style={styles.infoText}>Profile: {profile ? profile : "not selected"}</Text>
+        <Button title="Profiles" color={"orange"} onPress={() => navigation.navigate("Profiles")} />
       
-      <Text style={{fontSize:17,textAlign:'center',fontWeight:'bold',color:'black'}}>User: <Text style={{color:'red'}}>{user}</Text></Text>
-      <Text style={{fontSize:17,textAlign:'center',fontWeight:'bold',color:'black',marginBottom:10}}>Profile: {profile ? profile : "not selected"}</Text>
-      <Button
-        title="Profiles"
-        color={"orange"}
-        onPress={() => navigation.navigate("Profiles")}
-      />
-      
-      <View style={{flex:1,justifyContent:'flex-end',}}>
-        <Pressable style={{height:70,backgroundColor:'red',justifyContent:'center',alignItems:'center'}} onPress={signOut}>
-            <View style={{flexDirection:'row',alignItems:'center'}}>
-              <Icon style={{marginRight:10}} name={"logout"} color={'white'} size={30} />
-              <Text style={{fontSize:20,fontWeight:'bold',color:'white'}}>
+      <View style={styles.drawerFooterContainer}>
+        <Pressable style={styles.signOutBtn} onPress={signOut}>
+            <View style={styles.signOutBtnTextContainer}>
+              <Icon name={"logout"} color={'white'} size={30} />
+              <Text style={styles.signOutBtnText}>
                 LOGOUT
               </Text>
             </View>
@@ -104,36 +88,12 @@ function CustomDrawerContent(props) {
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
-
-
-
   return (
-    <Drawer.Navigator 
-      drawerContent={CustomDrawerContent}
-      initialRouteName="DrawerHome"
-      screenOptions={{
-        drawerStyle:{margin:0,padding:0}
-        }}>
-
+    <Drawer.Navigator drawerContent={CustomDrawerContent} >
       <Drawer.Screen name="DrawerHome" component={HomeScreen} 
             options={{
-              drawerItemStyle:{display:"none", backgroundColor:'black'},
+              drawerItemStyle:styles.drawerItemStyle,
               headerShown:false,
-              headerTransparent:true, 
-              headerTitle:"",
-              margin:0,
-              padding:0,
-              headerLeftContainerStyle:{
-                      backgroundColor:"#white",
-                      borderTopRightRadius:50,
-                      borderBottomRightRadius:50,
-                      shadowOffset: {width: 5,height: 5},
-                      shadowRadius:3,
-                      shadowOpacity:1,
-                      elevation:10,
-                      shadowColor:'black',
-                      // marginLeft:-10,
-                        }
               }} />
     </Drawer.Navigator>
   );
@@ -143,12 +103,6 @@ export default DrawerNavigator;
 
 
 const HomeScreen = () => {
-    // const navigation = useNavigation();
-  
-    // const openDrawer = () => {
-    //   navigation.openDrawer();
-    // };
-  
     return (
       <AppStack />
     );

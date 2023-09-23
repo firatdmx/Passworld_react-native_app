@@ -15,7 +15,11 @@ const ViewProfiles = ({profileName, showProfileDeleteModal}) => {
         dispatch(setProfile(veri))
         navigation.navigate("Dashboard")
     }
-
+// ██████  ███████ ███    ██ ██████  ███████ ██████  
+// ██   ██ ██      ████   ██ ██   ██ ██      ██   ██ 
+// ██████  █████   ██ ██  ██ ██   ██ █████   ██████  
+// ██   ██ ██      ██  ██ ██ ██   ██ ██      ██   ██ 
+// ██   ██ ███████ ██   ████ ██████  ███████ ██   ██ 
     return (
         <Pressable 
             onPress={() => handleDispatch(profileName)}
