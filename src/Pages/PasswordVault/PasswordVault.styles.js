@@ -10,7 +10,10 @@ export default styles = StyleSheet.create({
     },
     floatingButtonView: 
     {
-        flex:1,
+        // flex:1,
+        position:'absolute',
+        bottom:0,
+        right:0
     },
     title: 
     {

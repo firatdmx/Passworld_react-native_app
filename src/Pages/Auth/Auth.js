@@ -4,9 +4,12 @@ import styles from './Auth.styles.js'
 import auth from '@react-native-firebase/auth'
 import AuthButton from '../../components/AuthButton';
 import {setUserInfo} from '../../features/userInfo/userInfoSlice';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.js';
 
 
 const Auth = () => {
+
+  const [loading, setLoading] = useState(false)
 
   
   const [mail, setMail] = useState("dev@dev.com");   //bunlar null olacak
@@ -23,18 +26,24 @@ const Auth = () => {
     }
 
   const signUp = () => {
+      setLoading(true)
         if(mailpassExist()) {
           auth().createUserWithEmailAndPassword(mail, pass) 
-                .then(res => console.log("signup successfull, " +res)) 
+                .then(res => (
+                  console.log("signup successfull, " +res),
+                  setLoading(false)
+                  ))
                 .catch(error => { console.log("hataaaaaaa ", error)  })  
         }
       }
   
 
   const signIn = () => {
+    setLoading(true)
       if(mailpassExist()) {
         auth().signInWithEmailAndPassword(mail, pass) 
                     .then(res => (
+                      setLoading(false),
                       setUserInfo(res),
                       console.log("abi res burada: ", res)
                     )
@@ -49,6 +58,9 @@ const Auth = () => {
 // ██   ██ ██      ██  ██ ██ ██   ██ ██      ██   ██ 
 // ██   ██ ███████ ██   ████ ██████  ███████ ██   ██ 
     return (
+      <View style={{flex:1}}>
+        {loading ? <LoadingSpinner msg={"Signing in..."} /> : (
+
       <View style={styles.main}>
         <View style={styles.secondMain}>
           <Text style={styles.slogan}>
@@ -79,6 +91,8 @@ const Auth = () => {
           <AuthButton text="Sign Up" action={signUp} />
 
           </View>
+          
+          </View>)}
           </View>
           );
 }

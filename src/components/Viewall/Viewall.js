@@ -1,7 +1,7 @@
 import { View, Pressable, Alert, Text, ToastAndroid } from 'react-native'
 import React, { useState } from 'react'
 import styles from './Viewall.styles.js'
-import { useNavigation } from '@react-navigation/native'
+// import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux';
 import { setrecordID } from '../../features/recordID/recordIDSlice.js'
 import firestore from '@react-native-firebase/firestore';
@@ -10,11 +10,11 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
-const Viewall = ({data, refresh}) => {
+const Viewall = ({data, refresh, edit}) => {
 
   const veri = data.data()
 
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
   const dispatch = useDispatch();
   const [passVisible, setPassVisible] = useState(false)
@@ -28,7 +28,8 @@ const Viewall = ({data, refresh}) => {
       // console.log("yo", data["id"])
       const recordID = data["id"]
       dispatch(setrecordID(recordID));
-      navigation.navigate("EditRecord", {recordID})
+      // navigation.navigate("EditRecord", {recordID})
+      edit()
   }
 
     const cancelDelete = () => {

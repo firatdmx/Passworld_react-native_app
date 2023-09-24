@@ -12,6 +12,7 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
 import CryptoJS from 'react-native-crypto-js';
 import * as Keychain from 'react-native-keychain';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.js';
 
 
 // import CustomModal from '../../components/CustomModal/';
@@ -20,13 +21,15 @@ import * as Keychain from 'react-native-keychain';
 
 const PasswordVault = () => {
 
+  const [loading, setLoading] = useState(false)
+
   const platformRef = useRef();
   const usernameRef = useRef();
   const passwordRef = useRef();
 
-  // const editModalPlatformRef = useRef();
-  // const editModalUsernameRef = useRef();
-  // const editModalPasswordRef = useRef();
+  const editModalPlatformRef = useRef();
+  const editModalUsernameRef = useRef();
+  const editModalPasswordRef = useRef();
 
 
   const focusPlatformName = () => {
@@ -40,15 +43,15 @@ const PasswordVault = () => {
   }
 
 
-  // const editModalFocusPlatformName = () => {
-  //   editModalPlatformRef.current.focus()
-  // }
-  // const editModalFocusUsername = () => {
-  //   editModalUsernameRef.current.focus()
-  // }
-  // const editModalFocusPassword = () => {
-  //   editModalPasswordRef.current.focus()
-  // }
+  const editModalFocusPlatformName = () => {
+    editModalPlatformRef.current.focus()
+  }
+  const editModalFocusUsername = () => {
+    editModalUsernameRef.current.focus()
+  }
+  const editModalFocusPassword = () => {
+    editModalPasswordRef.current.focus()
+  }
 
   const profile = useSelector((state) => state.profile.value)
   const [data, setData] = useState([])
@@ -58,9 +61,9 @@ const PasswordVault = () => {
   const [newUserName, setNewUserName] = useState("")
   const [newPassword, setNewPassword] = useState("")
   
-  // const [editModalNewPlatformName, setEditModalNewPlatformName] = useState("")
-  // const [editModalNewUserName, setEditModalNewUserName] = useState("")
-  // const [editModalNewPassword, setEditModalNewPassword] = useState("")
+  const [editModalNewPlatformName, setEditModalNewPlatformName] = useState("")
+  const [editModalNewUserName, setEditModalNewUserName] = useState("")
+  const [editModalNewPassword, setEditModalNewPassword] = useState("")
 
   const [searchText, setSearchText] = useState("")
   const [encKey, setEncKey] = useState("")
@@ -69,6 +72,7 @@ const PasswordVault = () => {
   const [editModalVisible, setEditModalVisible] = useState(false)
   
   const getRecords = async (encrtipKey) => {
+    setLoading(true)
     try {
       const notes = await firestore().collection('profiles').doc(profile).collection('records').get();
       const docs = notes.docs
@@ -84,6 +88,7 @@ const PasswordVault = () => {
 
       setData(docsData)
       setFullData(docsData)
+      setLoading(false)
 
     } catch (error) {
       console.error("Hata oluştu:", error);
@@ -140,6 +145,8 @@ const PasswordVault = () => {
     }
   };      
 
+  const recordIDValue = useSelector((state) => state.recordID.value)
+
   const handleSave = () => {
     if (newPlatformName && newUserName && newPassword) {
       const encryptedAcc = CryptoJS.AES.encrypt(newUserName, encKey).toString();
@@ -160,31 +167,41 @@ const PasswordVault = () => {
 
     }
   }
-  // const editModalhandleSave = () => {
-  //   if (editModalNewPlatformName && editModalNewUserName && editModalNewPassword) {
-  //     const encryptedAcc = CryptoJS.AES.encrypt(editModalNewUserName, encKey).toString();
-  //     const encryptedPass = CryptoJS.AES.encrypt(editModalNewPassword, encKey).toString();
-  //     firestore().collection("profiles").doc(profile).collection('records').update({
-  //       platform: editModalNewPlatformName,
-  //       account: encryptedAcc,
-  //       pass: encryptedPass
-  //     })
-  //     setModalVisible(false);
-  //     ToastAndroid.show("New '"+editModalNewPlatformName+"' record has been added successfully.", ToastAndroid.LONG)
-  //     setEditModalNewPlatformName("")
-  //     setEditModalNewUserName("")
-  //     setEditModalNewPassword("")
-  //     retrieveEncryptionKey() //burayı düzeltmelisin dostum
-  //   } else {
-  //     Alert.alert("Error", "Make sure you have filled all of the fields.")
+  const editModalhandleSave = () => {
+    if (editModalNewPlatformName && editModalNewUserName && editModalNewPassword) {
+      const encryptedAcc = CryptoJS.AES.encrypt(editModalNewUserName, encKey).toString();
+      const encryptedPass = CryptoJS.AES.encrypt(editModalNewPassword, encKey).toString();
+      firestore().collection("profiles").doc(profile).collection('records').doc(recordIDValue)
+      .update({
+        platform: editModalNewPlatformName,
+        account: encryptedAcc,
+        pass: encryptedPass
+      })
+      setEditModalVisible(false);
+      ToastAndroid.show("'"+editModalNewPlatformName+"' record has been changed successfully.", ToastAndroid.LONG)
+      setEditModalNewPlatformName("")
+      setEditModalNewUserName("")
+      setEditModalNewPassword("")
+      retrieveEncryptionKey() //burayı düzeltmelisin dostum
+    } else {
+      Alert.alert("Error", "Make sure you have filled all of the fields.")
 
-  //   }
-  // }
+    }
+  }
+
+  const runme= (platf,usern,passw) => {
+    setEditModalNewPlatformName(platf)
+    setEditModalNewUserName(usern)
+    setEditModalNewPassword(passw)
+    setEditModalVisible(!editModalVisible)
+  }
   
   const render = ({item}) => {
-    // console.log("LANNNN bu ne ", item.data())
+    const plat = item.data()["platform"]
+    const acc = item.data()["account"]
+    const pass = item.data()["pass"]
     return(
-      <Viewall data={item} refresh={retrieveEncryptionKey} edit={() => setEditModalVisible(!editModalVisible)}/>
+      <Viewall data={item} refresh={retrieveEncryptionKey} edit={() => runme(plat, acc, pass) }/>
     )
   }
 
@@ -247,15 +264,19 @@ const PasswordVault = () => {
 
         </View>
 
-        {
-        data.length > 0 ? 
-        <FlatList data={data} renderItem={render} ItemSeparatorComponent={separator} /> 
-        : 
-        <View style={styles.notFoundContainer}>
-          <Text style={styles.notFoundText}> No entries found</Text>
-        </View>
-        }
-      
+        {loading ? <LoadingSpinner msg="Loading data..." /> : (
+                  <View>
+                  {
+                  data.length > 0 ? 
+                  <FlatList data={data} renderItem={render} ItemSeparatorComponent={separator} /> 
+                  : 
+                  <View style={styles.notFoundContainer}>
+                    <Text style={styles.notFoundText}> No entries found</Text>
+                  </View>
+                  }
+                  </View>
+        )}
+
       <View style={styles.floatingButtonView}>
         <FloatingButton pressAction={() => {
           setModalVisible(true)
@@ -350,7 +371,7 @@ const PasswordVault = () => {
 ██      ██  ██████  ██████  ██   ██ ███████ ███████ 
 */}
 
-{/* <Modal 
+<Modal 
               isVisible={editModalVisible}
               statusBarTranslucent={false}
               onBackButtonPress={editModalHandleCancel}
@@ -409,14 +430,13 @@ const PasswordVault = () => {
                   </TouchableOpacity>
 
                   <TouchableOpacity returnKeyType="send" accessible={true} accessibilityLabel="Input Password" onPress={editModalhandleSave} >
-                    <Text style={styles.modal.buttonText}>Add</Text>
+                    <Text style={styles.modal.buttonText}>Save</Text>
                   </TouchableOpacity>
 
                 </View>
 
               </View>
-            </Modal> */}
-      
+            </Modal>
 
     </View>
   )

@@ -1,4 +1,4 @@
-import { SafeAreaView, Text, FlatList, View, TextInput, TouchableOpacity, Pressable, Alert, ToastAndroid } from 'react-native'
+import { Text, FlatList, View, TextInput, TouchableOpacity, Pressable, Alert, ToastAndroid } from 'react-native'
 import React, {useState, useCallback, useRef} from 'react'
 import styles from './Profiles.styles.js'
 import firestore from '@react-native-firebase/firestore';
@@ -8,8 +8,11 @@ import { useFocusEffect } from '@react-navigation/native';
 import FloatingButton from '../../components/FloatingButton';
 import { setProfile } from '../../features/profile/profileSlice.js'
 import { useDispatch } from 'react-redux';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.js';
 
 const Profiles = () => {
+
+  const [loading, setLoading] = useState(false)
 
   const profileRef = useRef();
   const dispatch = useDispatch();
@@ -52,6 +55,7 @@ const Profiles = () => {
     }
     
     const fetchProfiles = async () => {
+      setLoading(true)
         let i;
         try {
           const notes = await firestore().collection('profiles').get();
@@ -63,6 +67,7 @@ const Profiles = () => {
           }
 
           setData(docsData)
+          setLoading(false)
 
         } catch (error) {
           console.error("Error:", error);
@@ -117,13 +122,19 @@ const Profiles = () => {
 // ██   ██ ██      ██  ██ ██ ██   ██ ██      ██   ██ 
 // ██   ██ ███████ ██   ████ ██████  ███████ ██   ██ 
     return (
-        <SafeAreaView style={styles.main}>
+      <View style={{flex:1,justifyContent:'center',alignItems:'center',}}>
+        {loading ? <LoadingSpinner msg={"Loading profiles"} /> :
+         
+        
+        
+        (
+
+        <View style={styles.main}>
 
             <Text 
               style={styles.title}>
                 Choose a profile
             </Text>
-
             {data.length != 0 ? 
             <FlatList
               numColumns={2}
@@ -137,8 +148,8 @@ const Profiles = () => {
               </View>
               }
 
-            
-            <FloatingButton title={"+"} pressAction={toggleProfileAddModal} />
+            {/* floating button style duzenlenecek */}
+            <FloatingButton style={{position:'absolute', bottom:0, right:0}} title={"+"} pressAction={toggleProfileAddModal} />
 
             <Modal 
               isVisible={profileAddModalVisible}
@@ -199,7 +210,11 @@ const Profiles = () => {
 
               </View>
             </Modal>
-        </SafeAreaView>
+        </View> )
+      }
+
+
+        </View>
     )
 }
 
