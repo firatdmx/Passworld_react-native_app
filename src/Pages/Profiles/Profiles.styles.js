@@ -31,6 +31,10 @@ export default styles = StyleSheet.create({
         btnsView: { flexDirection: 'row', justifyContent: 'center' },
         cancelBtnText: { fontWeight: 'bold', marginRight: 15, marginTop: 5, borderWidth: 1, borderRadius: 10, padding: 5, backgroundColor: 'gray', color: 'white' },
         confirmBtnText: { fontWeight: 'bold', marginRight: 15, marginTop: 5, borderWidth: 1, borderRadius: 10, padding: 5, backgroundColor: 'red', color: 'white' }
-    }
+    },
+    floatingAddBtn: 
+    {
+        flex:1,position:'absolute', bottom:50, right:0,backgroundColor:"red"
+    },
 
 })

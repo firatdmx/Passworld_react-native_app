@@ -213,7 +213,7 @@ const Profiles = () => {
             </Modal>
 
 
-            <View style={{flex:1,position:'absolute', bottom:0, right:0,backgroundColor:"red"}}>
+            <View style={styles.floatingAddBtn}>
               <FloatingButton title={"+"} pressAction={toggleProfileAddModal} />
             </View>
         </View> )
