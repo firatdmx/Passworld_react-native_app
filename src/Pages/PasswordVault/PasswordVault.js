@@ -250,7 +250,7 @@ const PasswordVault = () => {
   return (
     <View style={styles.main}>
       <View>
-        <Text style={styles.title}>Password Vault</Text>
+        {/* <Text style={styles.title}>Password Vault</Text> */}
         
         <View style={styles.searchBarContainer}>
 

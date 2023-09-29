@@ -7,12 +7,7 @@ import auth from '@react-native-firebase/auth'
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './DrawerNavigator.styles'
-
-
-import {
-  DrawerContentScrollView,
-  DrawerItemList,
-} from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerItemList} from '@react-navigation/drawer';
 
 
 function CustomDrawerContent(props) {
@@ -38,8 +33,6 @@ function CustomDrawerContent(props) {
     getCurrentUser()
   }, [])
   
-
-
 
   const profile = useSelector((state) => state.profile.value)
 
@@ -67,7 +60,8 @@ function CustomDrawerContent(props) {
 
         <Text style={styles.infoText}>User: <Text style={{color:'red'}}>{user}</Text></Text>
         <Text style={styles.infoText}>Profile: {profile ? profile : "not selected"}</Text>
-        <Button title="Profiles" color={"orange"} onPress={() => navigation.navigate("Profiles")} />
+        <Button title="Profiles" color="orange" onPress={() => navigation.navigate("Profiles")} />
+        <Button title="Settings" color="#aaaa00" onPress={() => navigation.navigate("Settings")} />
       
       <View style={styles.drawerFooterContainer}>
         <Pressable style={styles.signOutBtn} onPress={signOut}>

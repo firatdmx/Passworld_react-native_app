@@ -122,7 +122,7 @@ const Profiles = () => {
 // ██   ██ ██      ██  ██ ██ ██   ██ ██      ██   ██ 
 // ██   ██ ███████ ██   ████ ██████  ███████ ██   ██ 
     return (
-      <View style={{flex:1,justifyContent:'center',alignItems:'center',}}>
+      <View style={{flex:1,}}>
         {loading ? <LoadingSpinner msg={"Loading profiles"} /> :
          
         
@@ -131,17 +131,19 @@ const Profiles = () => {
 
         <View style={styles.main}>
 
-            <Text 
-              style={styles.title}>
-                Choose a profile
-            </Text>
+            <Text style={styles.title}>Choose a profile</Text>
+
             {data.length != 0 ? 
-            <FlatList
-              numColumns={2}
-              data={data}
-              renderItem={render}
-              key={data}
-              />
+            <View style={{flex:1}}>
+              <FlatList
+                numColumns={2}
+                data={data}
+                renderItem={render}
+                key={data}
+                style={{paddingHorizontal:10}}
+                />
+            </View>
+
               :
               <View>
                 <Text style={{color:'gray',fontWeight:'bold',fontSize:15}}>No profiles have been found...Please add a new profile.</Text>
@@ -149,7 +151,6 @@ const Profiles = () => {
               }
 
             {/* floating button style duzenlenecek */}
-            <FloatingButton style={{position:'absolute', bottom:0, right:0}} title={"+"} pressAction={toggleProfileAddModal} />
 
             <Modal 
               isVisible={profileAddModalVisible}
@@ -210,6 +211,11 @@ const Profiles = () => {
 
               </View>
             </Modal>
+
+
+            <View style={{flex:1,position:'absolute', bottom:0, right:0,backgroundColor:"red"}}>
+              <FloatingButton title={"+"} pressAction={toggleProfileAddModal} />
+            </View>
         </View> )
       }
 

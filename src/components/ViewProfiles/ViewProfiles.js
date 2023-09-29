@@ -13,7 +13,7 @@ const ViewProfiles = ({profileName, showProfileDeleteModal}) => {
 
     const handleDispatch = (veri) => {
         dispatch(setProfile(veri))
-        navigation.navigate("Dashboard")
+        navigation.navigate("PasswordVault")
     }
 // ██████  ███████ ███    ██ ██████  ███████ ██████  
 // ██   ██ ██      ████   ██ ██   ██ ██      ██   ██ 

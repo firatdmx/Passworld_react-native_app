@@ -6,7 +6,8 @@ const deviceWidth = Dimensions.get('window').width;
 export default styles = StyleSheet.create({
     main:
     {
-        flex: 1, alignItems: 'center'
+        flex: 1, 
+        alignItems: 'center',
     },
     title:
     {
