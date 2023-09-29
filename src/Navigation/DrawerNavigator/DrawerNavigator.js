@@ -53,9 +53,9 @@ function CustomDrawerContent(props) {
       <DrawerItemList {...props} />
 
         <View style={styles.avatarContainer}>
-          <Pressable onLongPress={() => console.log("clicked avatar")}>
-            <Text style={styles.avatarChar}>{user && user[0].toUpperCase()}</Text>
-          </Pressable>
+            <Pressable onLongPress={() => console.log("clicked avatar")}>
+              <Text style={styles.avatarChar}>{user && user[0].toUpperCase()}</Text>
+            </Pressable>
         </View>
 
         <Text style={styles.infoText}>User: <Text style={{color:'red'}}>{user}</Text></Text>

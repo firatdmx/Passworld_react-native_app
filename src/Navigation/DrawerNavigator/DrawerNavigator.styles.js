@@ -3,23 +3,22 @@ import {StyleSheet} from 'react-native';
 export default styles = StyleSheet.create({
     avatarContainer:
     {
-        width: 90,
-        height: 90,
-        justifyContent: 'center',
-        alignItems: 'center',
+        width:90,
+        height:90,
         borderRadius: 50,
         backgroundColor: 'orange',
         borderWidth:1,
-        alignSelf:'center',
         margin:10,
+        alignSelf:'center',
+        alignItems:'center',
     },
     avatarChar:
     {
-        flex:1,
-        textAlign:'center',
+        top:-3, //needs better solution
+        left:3, //needs better solution
         fontWeight:'bold',
         fontSize: 70,
-        color: 'white'
+        color: 'white',
     },
     infoText: 
     {
@@ -27,7 +26,7 @@ export default styles = StyleSheet.create({
         textAlign:'center',
         fontWeight:'bold',
         color:'black',
-        marginBottom:5
+        marginBottom:10
     },
     drawerFooterContainer:
     {
@@ -71,7 +70,8 @@ export default styles = StyleSheet.create({
     drawerContentScroll: 
     {
         flex:1,
-        paddingTop:"5%",
+        paddingTop:"35%",
+        paddingBottom:"15%"
     }
 
 

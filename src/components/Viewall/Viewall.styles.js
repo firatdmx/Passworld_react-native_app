@@ -22,6 +22,7 @@ export default styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 50,
     color: 'white',
+    top:-4, //needs better solution
   },
   avatarAndInfo: {
     flexDirection: 'row',
