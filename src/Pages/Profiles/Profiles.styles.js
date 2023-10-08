@@ -14,8 +14,8 @@ export default styles = StyleSheet.create({
         textAlign: 'center', fontSize: 30, color: 'orange', fontWeight: 'bold', textShadowColor: 'rgba(0, 0, 0, 0.75)',
         textShadowOffset: { width: -1, height: 1 }, textShadowRadius: 10
     },
-    addModal: {
-        main: { alignSelf: 'center', width: deviceWidth * 0.6, height: deviceHeight * 0.15, backgroundColor: 'white', borderRadius: 15, padding: 5 },
+    addModal: {//bunları gerçek responsive yap...
+        main: { alignSelf: 'center', width: deviceWidth * 0.6, height: deviceHeight * 0.18, backgroundColor: 'white', borderRadius: 15, padding: 5 },
         title: { textAlign: 'center', fontWeight: 'bold', fontSize: 20, color: 'red', marginTop: 0, top: 0 },
         textinput: { borderWidth: 1, borderRadius: 2, padding: 3, margin: 5 },
         buttonsView: { flexDirection: 'row', justifyContent: 'flex-end' },

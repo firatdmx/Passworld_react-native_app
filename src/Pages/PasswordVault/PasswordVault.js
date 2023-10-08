@@ -20,6 +20,23 @@ import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.js';
 
 
 const PasswordVault = () => {
+  const [user, setUser] = useState("");
+
+  const getCurrentUser = () => {
+    const user = auth().currentUser;
+    if (user) {
+      // console.log(user.email); //print active user. ayrica user.email yerine full user bilgilerini kaydet
+      setUser(user.email)
+      return user.email;
+    } else {
+      console.log('logged user not found');
+      return false;
+    }
+  };
+
+
+
+
 
   const [loading, setLoading] = useState(false)
 
@@ -72,9 +89,11 @@ const PasswordVault = () => {
   const [editModalVisible, setEditModalVisible] = useState(false)
   
   const getRecords = async (encrtipKey) => {
+    // const userMail = getCurrentUser()
     setLoading(true)
     try {
-      const notes = await firestore().collection('profiles').doc(profile).collection('records').get();
+      const notes = await firestore().collection('users').doc(user).collection("profiles").doc(profile).collection('records').get();
+      
       const docs = notes.docs
       let docsData = []
 
@@ -98,12 +117,16 @@ const PasswordVault = () => {
 
   const retrieveEncryptionKey = async () => {
     try {
-      const result = await Keychain.getGenericPassword();
+      const result = await Keychain.getGenericPassword({service: "SPECIAL"});
       if (result) {
+        // console.log("PasswordVault.js result: ", result)
         const encryptionKey = result.password;
         setEncKey(encryptionKey)
         // console.log('Retrieved encryption key:', encryptionKey);
-        getRecords(encryptionKey)
+        if(encryptionKey) {
+          // console.log("encryption key geldi abicim: ", encryptionKey)
+          getRecords(encryptionKey)
+        }
         // return encryptionKey;
       } else {
         console.log('Encryption key not found.');
@@ -118,13 +141,13 @@ const PasswordVault = () => {
 
   useFocusEffect(
     useCallback(() => {
-      retrieveEncryptionKey();
-    }, [])
+      if (user) {retrieveEncryptionKey()}
+    }, [user])
     )
 
     useEffect(() => {
       getCurrentUser();
-      retrieveEncryptionKey();
+      // if (user) {retrieveEncryptionKey()}
 
       return () => {
         getCurrentUser();
@@ -133,25 +156,16 @@ const PasswordVault = () => {
 
 
 
-  const getCurrentUser = () => {
-    const user = auth().currentUser;
-    if (user) {
-      // console.log(user.email); //print active user
-      // setUser(user.email)
-      return true;
-    } else {
-      console.log('logged user not found');
-      return false;
-    }
-  };      
+      
 
   const recordIDValue = useSelector((state) => state.recordID.value)
 
   const handleSave = () => {
+    // const userMail = getCurrentUser()
     if (newPlatformName && newUserName && newPassword) {
       const encryptedAcc = CryptoJS.AES.encrypt(newUserName, encKey).toString();
       const encryptedPass = CryptoJS.AES.encrypt(newPassword, encKey).toString();
-      firestore().collection("profiles").doc(profile).collection('records').add({
+      firestore().collection('users').doc(user).collection("profiles").doc(profile).collection('records').add({
         platform: newPlatformName,
         account: encryptedAcc,
         pass: encryptedPass
@@ -168,10 +182,17 @@ const PasswordVault = () => {
     }
   }
   const editModalhandleSave = () => {
+    // const userMail = getCurrentUser()
     if (editModalNewPlatformName && editModalNewUserName && editModalNewPassword) {
       const encryptedAcc = CryptoJS.AES.encrypt(editModalNewUserName, encKey).toString();
       const encryptedPass = CryptoJS.AES.encrypt(editModalNewPassword, encKey).toString();
-      firestore().collection("profiles").doc(profile).collection('records').doc(recordIDValue)
+      firestore()
+      .collection('users')
+      .doc(user)
+      .collection("profiles")
+      .doc(profile)
+      .collection('records')
+      .doc(recordIDValue)
       .update({
         platform: editModalNewPlatformName,
         account: encryptedAcc,

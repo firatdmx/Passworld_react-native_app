@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, Button, View, Pressable} from "react-native"
+import {Text, Button, View, Pressable, SafeAreaView} from "react-native"
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import AppStack from '../AppStack';
