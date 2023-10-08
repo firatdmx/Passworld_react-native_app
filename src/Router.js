@@ -5,12 +5,71 @@ import Orientation from 'react-native-orientation-locker';
 import * as Keychain from 'react-native-keychain';
 import Config from 'react-native-config';
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
-
+import AppPassword from './Pages/AppPassword';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState } from 'react-native';
+import { setUnlockState } from './features/unlockState/unlockStateSlice';
 import AuthStack from './Navigation/AuthStack';
 import DrawerNavigator from './Navigation/DrawerNavigator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Router = () => {
+
+
+  const dispatch = useDispatch()
+
+  const handleAppStateChange = (nextAppState) => {
+    if (nextAppState === 'background') {
+      dispatch(setUnlockState(false));
+    }
+  };
+
+
+  AppState.addEventListener('change', handleAppStateChange);
+
+  const unlockedS = useSelector((state) => state.unlockState.value)
+  // console.log("unlockedS: ", unlockedS)
+
   const [loading, setLoading] = useState(false)
+
+  const [isPinEnabled, setIsPinEnabled] = useState(false);
+
+
+  const getBooleanValue = async (key) => {
+    try {
+      const value = await AsyncStorage.getItem(key);
+
+      if (value === "true") {
+        return value === 'true';
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error('ERR:', error);
+      return false;
+    }
+  };
+
+  const getCurrentUser = () => {
+    const user = auth().currentUser;
+    if (user) {
+      // console.log(user.email); //print active user
+      setUser(user.email)
+      return user.email;
+    } else {
+      console.log('logged user not found');
+      return false;
+    }
+  }; 
+
+  useEffect(() => {
+    getBooleanValue(getCurrentUser()+'_isPasswordEnabled').then((result) => {
+      setIsPinEnabled(result);
+    });
+  }, [isPinEnabled]);
+
+
+
 
   const storeEncryptionKey = async () => {
     setLoading(true)
@@ -18,9 +77,9 @@ const Router = () => {
     const password = Config.MY_VERY_SECRET_KEY
   
     try {
-      await Keychain.setGenericPassword(username, password);
+      await Keychain.setGenericPassword(username, password, {service: "SPECIAL"});
       setLoading(false)
-      console.log('Encryption key stored securely.');
+      // console.log('Encryption key stored securely.');
     } catch (error) {
       console.error('Error storing encryption key:', error);
     }
@@ -39,13 +98,26 @@ const Router = () => {
         return unsubscribe;
       }, []);
 
+      const isUserLoggedIn = () => {
+        if (user) {
+          return <DrawerNavigator />
+        } else {
+          return <AuthStack />
+        }
+      }
+
+  
 
     return (
         <NavigationContainer>
           {loading && <LoadingSpinner />}
-            {user ? <DrawerNavigator /> : <AuthStack />}
+            {!unlockedS && isPinEnabled && user  ? <AppPassword /> : isUserLoggedIn()}
         </NavigationContainer>
       )
-  }
-  
-  export default Router;
+    }
+    
+    export default Router;
+    
+    
+    
+    // {/* {user ? <DrawerNavigator /> : <AuthStack />} */}

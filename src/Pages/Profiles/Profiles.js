@@ -1,5 +1,5 @@
 import { Text, FlatList, View, TextInput, TouchableOpacity, Pressable, Alert, ToastAndroid } from 'react-native'
-import React, {useState, useCallback, useRef} from 'react'
+import React, {useState, useCallback, useRef, useEffect} from 'react'
 import styles from './Profiles.styles.js'
 import firestore from '@react-native-firebase/firestore';
 import ViewProfiles from '../../components/ViewProfiles';
@@ -9,10 +9,14 @@ import FloatingButton from '../../components/FloatingButton';
 import { setProfile } from '../../features/profile/profileSlice.js'
 import { useDispatch } from 'react-redux';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.js';
+import auth from '@react-native-firebase/auth'
+
 
 const Profiles = () => {
+  
 
   const [loading, setLoading] = useState(false)
+  const [user, setUser] = useState("");
 
   const profileRef = useRef();
   const dispatch = useDispatch();
@@ -42,8 +46,9 @@ const Profiles = () => {
     };
 
     const addProfile = async (profName) => {
+      const userMail = getCurrentUser()
       if (profName && profName[0] != " ") {
-        const profs = firestore().collection("profiles")
+        const profs = firestore().collection('users').doc(userMail).collection('profiles')
         profs.doc(profName).set({})
         setNewProfileName("")
         setProfileAddModalVisible(false);
@@ -52,13 +57,26 @@ const Profiles = () => {
       } else {
         Alert.alert("Error", "Profile name cannot be empty and cannot begin with a space character.")
       }
+    }   
+
+  
+  const getCurrentUser = () => {
+    const user = auth().currentUser;
+    if (user) {
+      setUser(user.email)
+      return user.email; //burayi duzeltttttttttttttt baska yerlerde de var bu isi basitlerstir ayrica user.email yerine full user bilgilerini kaydet
+    } else {
+      console.log('logged user not found');
+      return null;
     }
+  };
     
     const fetchProfiles = async () => {
+      const userMail = getCurrentUser()
       setLoading(true)
         let i;
         try {
-          const notes = await firestore().collection('profiles').get();
+          const notes = await firestore().collection('users').doc(userMail).collection('profiles').get();
           const docs = notes.docs
           let docsData = []
           
@@ -73,6 +91,8 @@ const Profiles = () => {
           console.error("Error:", error);
         }
       }
+
+
 
     useFocusEffect(
       useCallback(
@@ -94,6 +114,8 @@ const Profiles = () => {
       const handleProfileDeleteAction = (secprofil) => {
         if (secprofil.toUpperCase() === verificationText.toUpperCase()) {
           firestore()
+          .collection('users')
+          .doc(user)
           .collection("profiles")
           .doc(secprofil)
           .delete()

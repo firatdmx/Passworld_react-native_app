@@ -5,6 +5,7 @@ import auth from '@react-native-firebase/auth'
 import AuthButton from '../../components/AuthButton';
 import {setUserInfo} from '../../features/userInfo/userInfoSlice';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.js';
+import firestore from '@react-native-firebase/firestore';
 
 
 const Auth = () => {
@@ -45,12 +46,41 @@ const Auth = () => {
                     .then(res => (
                       setLoading(false),
                       setUserInfo(res),
-                      console.log("abi res burada: ", res)
+                      checkUserDocument()
+                      // console.log("abi res burada: ", res)
                     )
                       ) 
                     .catch(error => { console.log("hataaaaaaa ", error)  })  
         }
       }
+
+  const checkUserDocument = async () => {
+    const userMail =  getCurrentUser()
+    console.log(userMail)
+    const userXget = await firestore().collection('users').doc(userMail).get();
+    const userX = firestore().collection('users').doc(userMail);
+    if (userXget.exists) {
+      console.log("user EXISTS")
+    } else {
+      userX.set({})
+      // await firestore().collection('users').doc(userMail).collection('profiles').add({"silbeni":"tamam"})
+      // .then((ref)=> {
+      //   console.log("refffffffffffffffffffffffff:" , ref)
+      //   ref.delete()
+      // })
+      console.log("NOT EXISTS WORKED")
+    }
+  }
+  const getCurrentUser = () => {
+    const user = auth().currentUser;
+    if (user) {
+      return user.email;
+    } else {
+      console.log('logged user not found');
+      return null;
+    }
+  };
+
    
 // ██████  ███████ ███    ██ ██████  ███████ ██████  
 // ██   ██ ██      ████   ██ ██   ██ ██      ██   ██ 
@@ -59,7 +89,7 @@ const Auth = () => {
 // ██   ██ ███████ ██   ████ ██████  ███████ ██   ██ 
     return (
       <View style={{flex:1}}>
-        {loading ? <LoadingSpinner msg={"Signing in..."} /> : (
+        {loading ? <LoadingSpinner msg={"Please Wait..."} /> : (
 
       <View style={styles.main}>
         <View style={styles.secondMain}>

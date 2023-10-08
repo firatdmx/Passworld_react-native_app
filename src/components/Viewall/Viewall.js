@@ -1,5 +1,5 @@
 import { View, Pressable, Alert, Text, ToastAndroid } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './Viewall.styles.js'
 // import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,19 +7,47 @@ import { setrecordID } from '../../features/recordID/recordIDSlice.js'
 import firestore from '@react-native-firebase/firestore';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import Clipboard from '@react-native-clipboard/clipboard';
+import auth from '@react-native-firebase/auth'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 const Viewall = ({data, refresh, edit}) => {
+  const [user, setUser] = useState("");
+
+
+
+
+  const getCurrentUser = () => {
+    const user = auth().currentUser;
+    if (user) {
+      // console.log(user.email); //print active user
+      setUser(user.email)
+      return user.email;
+    } else {
+      console.log('logged user not found');
+      return false;
+    }
+  };
+
+
+  useEffect(() => {
+    getCurrentUser();
+    // if (user) {retrieveEncryptionKey()}
+
+    return () => {
+      getCurrentUser();
+    }
+  }, [])
 
   const veri = data.data()
+  // console.log("veri:", veri)
 
   // const navigation = useNavigation();
 
   const dispatch = useDispatch();
   const [passVisible, setPassVisible] = useState(false)
 
-  const profileValue = useSelector((state) => state.profile.value)
+  const profile = useSelector((state) => state.profile.value)
 
   // const goToEditPage = () => {
   //     edit(data["platform"], data["account"], data["pass"])
@@ -39,8 +67,10 @@ const Viewall = ({data, refresh, edit}) => {
     const confirmDelete = () => {
         const recordID = data["id"]
             firestore()
-            .collection('profiles')
-            .doc(profileValue)
+            .collection('users')
+            .doc(user)
+            .collection("profiles")
+            .doc(profile)
             .collection('records')
             .doc(recordID)
             .delete()

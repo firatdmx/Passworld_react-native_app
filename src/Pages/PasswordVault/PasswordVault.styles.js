@@ -84,8 +84,8 @@ export default styles = StyleSheet.create({
         main: 
         {
             alignSelf:'center',
-            width:deviceWidth * 0.7 ,
-            height:deviceHeight * 0.31,
+            width:deviceWidth * 0.7 ,//bunları gerçek responsive yap...
+            height:deviceHeight * 0.35, //bunları gerçek responsive yap...
             backgroundColor:'white',
             padding:5,
             borderRadius:15,
