@@ -10,7 +10,7 @@ import Modal from 'react-native-modal';
 
 
 const Settings = () => {
-  const [isPasswordSet, setIsPasswordSet] = useState(false);
+  const [isPinSet, setIsPinSet] = useState(false);
   const [isPinLoginEnabled, setIsPinLoginEnabled] = useState(false);
   const [isSetPinModalVisible, setIsSetPinModalVisible] = useState(false);
   const [newPin, setNewPin] = useState("");
@@ -36,11 +36,11 @@ const Settings = () => {
       if (credentials) {
         const pinCode = credentials.password
         // console.log('Retrieved PIN SETTINGS.js:', pinCode);
-        setIsPasswordSet(true)
+        setIsPinSet(true)
         return pinCode;
       } else {
         // handleSetNewPin()
-        setIsPasswordSet(false)
+        setIsPinSet(false)
         console.log('No PIN found.');
         return null;
       }
@@ -56,7 +56,7 @@ const Settings = () => {
     try {
       await Keychain.resetGenericPassword({service: servis})
       .then(() => {
-        setIsPasswordSet(false)
+        setIsPinSet(false)
         setIsPinLoginEnabled(false)
         resetEn()
         Alert.alert("Warning", "The app will be restarted", [
@@ -88,7 +88,7 @@ const Settings = () => {
       {
         // console.log('PIN saved successfully.', newPin),
         setIsPinLoginEnabled(!isPinLoginEnabled) //yeni ekledim toggledaydi
-        setIsPasswordSet(true)
+        setIsPinSet(true)
         setPinAlert()
       }
       )
@@ -116,9 +116,9 @@ const Settings = () => {
     useEffect(() => {
       if (user) {
         getPin()
-        getIsPasswordEnabled(user +'_isPasswordEnabled')
+        getIsPinEnabled(user +'_isPinEnabled')
         .then((result) => {
-          // console.log("getIsPasswordEnabled result", result)
+          // console.log("getIsPinEnabled result", result)
           if (result == "true") {
             setIsPinLoginEnabled(true);
           } else {
@@ -129,7 +129,7 @@ const Settings = () => {
 
     }, [user]);
   
-    const storeIsPasswordEnabled = async (key, value) => {
+    const storeIsPinEnabled = async (key, value) => {
       try {
         // console.log("storeit ", key, value)
         await AsyncStorage.setItem(key, value);
@@ -138,10 +138,10 @@ const Settings = () => {
       }
     };
   
-    const getIsPasswordEnabled = async (key) => {
+    const getIsPinEnabled = async (key) => {
       try {
         const value = await AsyncStorage.getItem(key);
-        // console.log("getIsPasswordEnabled funct value", value)
+        // console.log("getIsPinEnabled funct value", value)
         if (value === "true") {
           return 'true';
         } else {
@@ -177,23 +177,23 @@ const Settings = () => {
     }
 
     const resetEn = () => {
-      AsyncStorage.setItem(user + "_isPasswordEnabled", "false");
-      // AsyncStorage.setItem("dev2@dev.com_isPasswordEnabled", "false"); // kaldırrrrrrr
+      AsyncStorage.setItem(user + "_isPinEnabled", "false");
+      // AsyncStorage.setItem("dev2@dev.com_isPinEnabled", "false"); // kaldırrrrrrr
       console.log("RESETTED dev")
     }
 
 
   
     const toggleSwitch = () => {
-      const key = user +'_isPasswordEnabled'
+      const key = user +'_isPinEnabled'
 
       // setIsPinLoginEnabled(!isPinLoginEnabled)
       let enabled = !isPinLoginEnabled
       if (enabled) {
-        storeIsPasswordEnabled(key, "true");
-        // console.log("isPasswordSet: ", isPasswordSet)
+        storeIsPinEnabled(key, "true");
+        // console.log("isPinSet: ", isPinSet)
         
-        if(isPasswordSet) {
+        if(isPinSet) {
           setPinAlert()
         }
         else {
@@ -201,7 +201,7 @@ const Settings = () => {
         }
 
       } else {
-        storeIsPasswordEnabled(key, "false");
+        storeIsPinEnabled(key, "false");
         setPinAlert()
       }
       
@@ -229,12 +229,12 @@ const Settings = () => {
             />
           </View>
 
-{isPasswordSet && 
+{isPinSet && 
 <View>
   <View style={{borderTopWidth:1,borderTopColor:"#aaaaaa50",marginHorizontal:5}} />
           <View style={{margin:5,marginVertical:10}}>
-            <Pressable disabled={!isPasswordSet} onPress={() => setIsSetPinModalVisible(true)}>
-              <Text style={isPasswordSet ? {color:'blue'} : {color:'gray'} }>Modify Pin Code</Text>
+            <Pressable disabled={!isPinSet} onPress={() => setIsSetPinModalVisible(true)}>
+              <Text style={isPinSet ? {color:'blue'} : {color:'gray'} }>Modify Pin Code</Text>
             </Pressable>
           </View> 
   </View>
@@ -298,8 +298,8 @@ const Settings = () => {
             <TextInput
               returnKeyType="done"
               accessible={true}
-              accessibilityLabel="Input Password"
-              // ref={passwordRef}
+              accessibilityLabel="Input Pin"
+              // ref={pinRef}
               style={{
                 borderWidth: 1,
                 margin: 5,
