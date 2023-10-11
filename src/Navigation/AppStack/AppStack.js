@@ -9,9 +9,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Stack = createNativeStackNavigator();
 
-const headerRightFnc = () => {
-    return (<TouchableHighlight onPress={() => console.log("test")}><Text>Test</Text></TouchableHighlight>)
-}
+// const headerRightFnc = () => {
+//     return (<TouchableHighlight onPress={() => console.log("test")}><Text>Test</Text></TouchableHighlight>)
+// }
 
 const headerMenuIcon = () => {
     const navigation = useNavigation();
@@ -26,7 +26,7 @@ const headerMenuIcon = () => {
 const AppStack = () => {
     return (
         <Stack.Navigator initialRouteName="Profiles" screenOptions={headerstyle.main}>
-            <Stack.Screen name="Profiles" options={{headerTitle:"Password Vault",headerLeft:headerMenuIcon,headerRight:headerRightFnc}} component={ProfilesPage} />
+            <Stack.Screen name="Profiles" options={{headerTitle:"Password Vault",headerLeft:headerMenuIcon,headerRight:null}} component={ProfilesPage} />
             <Stack.Screen name="PasswordVault" options={{headerTitle:"Password Vault",headerLeft:headerMenuIcon}} component={PasswordVaultPage} />
             <Stack.Screen name="EditRecord" component={EditRecordPage} />
             <Stack.Screen name="Settings" component={SettingsPage} />
