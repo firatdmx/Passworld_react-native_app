@@ -30,8 +30,8 @@ export default styles = StyleSheet.create({
     },
     drawerFooterContainer:
     {
-        flex:1,
-        justifyContent:'flex-end',
+        // flex:1,
+        // justifyContent:'flex-end',
     },
     signOutBtn:
     {

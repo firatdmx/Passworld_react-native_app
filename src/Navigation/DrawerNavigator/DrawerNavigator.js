@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, Button, View, Pressable, SafeAreaView} from "react-native"
+import {Text, Button, View, Pressable, SafeAreaView,TouchableHighlight} from "react-native"
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import AppStack from '../AppStack';
@@ -60,13 +60,27 @@ function CustomDrawerContent(props) {
 
         <Text style={styles.infoText}>User: <Text style={{color:'red'}}>{user}</Text></Text>
         <Text style={styles.infoText}>Profile: {profile ? profile : "not selected"}</Text>
-        <Button title="Profiles" color="orange" onPress={() => navigation.navigate("Profiles")} />
-        <Button title="Settings" color="#aaaa00" onPress={() => navigation.navigate("Settings")} />
+
+      <View style={{flex:1,backgroundColor:'transparent',paddingLeft:15,justifyContent:'flex-end'}}>
+        <TouchableHighlight underlayColor={"white"} style={{}} onPress={() => navigation.navigate("Profiles")}>
+          <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
+            <Icon name={"account-group"} color={'gray'} size={32} />
+          <Text style={{padding:10,fontSize:17,fontWeight:'600',color:'#333',marginLeft:10}}>Profiles</Text>
+          </View>
+        </TouchableHighlight>
+
+        <TouchableHighlight underlayColor={"white"} style={{}} onPress={() => navigation.navigate("Settings")}>
+          <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
+            <Icon name={"cog-outline"} color={'gray'} size={32} />
+          <Text style={{padding:10,fontSize:17,fontWeight:'600',color:'#333',marginLeft:10}}>Settings</Text>
+          </View>
+        </TouchableHighlight>
+      </View>
       
       <View style={styles.drawerFooterContainer}>
         <Pressable style={styles.signOutBtn} onPress={signOut}>
             <View style={styles.signOutBtnTextContainer}>
-              <Icon name={"logout"} color={'white'} size={30} />
+              <Icon name={"logout"} color={'white'} size={32} />
               <Text style={styles.signOutBtnText}>
                 LOGOUT
               </Text>

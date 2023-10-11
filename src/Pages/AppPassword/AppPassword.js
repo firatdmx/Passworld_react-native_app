@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableHighlight, BackHandler,AppState, Alert, } from 'react-native'
+import { View, Text, TextInput, TouchableHighlight,AppState, } from 'react-native'
 import React, {useState,useEffect,useRef} from 'react'
 import * as Keychain from 'react-native-keychain'; //pin için
 import styles from './AppPassword.styles.js'
@@ -17,10 +17,23 @@ const AppPassword = () => {
     const [pins, setPins] = useState("")
     const [passVal, setPassVal] = useState("")
     
+    
+    const getCurrentUser = () => {
+        const user = auth().currentUser;
+        if (user) {
+          // console.log(user.email); //print active user
+        //   setUser(user.email)
+          return user.email;
+        } else {
+          console.log('logged user not found');
+          return false;
+        }
+      }; 
+    
 
     const getPin = async () => {
         try {
-          const credentials = await Keychain.getGenericPassword({service: "pinCode"});
+          const credentials = await Keychain.getGenericPassword({service: getCurrentUser() + "_pinCode"});
           if (credentials) {
             setPins(credentials.password)
             // console.log('Retrieved PIN AppPassword.js:', pins);
@@ -67,14 +80,11 @@ const AppPassword = () => {
 
     useEffect(() => {
         if (passVal.length == 4) {
-            // console.log("4 oldu")
-            // console.log("pin bu", pins)
             if (passVal == pins) {
-                console.log("PAROLA DOGRU")
-                // console.log("passVal:", passVal,  "pins:", pins)
+                // console.log("PAROLA DOGRU")
                 dispatch(setUnlockState(true))
             } else {
-                console.log("PAROLA YANLIS")
+                // console.log("PAROLA YANLIS")
                 showErrorMessage()
                 setPassVal("")
                 dispatch(setUnlockState(false))
@@ -105,7 +115,11 @@ const AppPassword = () => {
                     .catch(err => console.log('logout hata olustu: ', err))
       }
 
-
+// ██████  ███████ ███    ██ ██████  ███████ ██████  
+// ██   ██ ██      ████   ██ ██   ██ ██      ██   ██ 
+// ██████  █████   ██ ██  ██ ██   ██ █████   ██████  
+// ██   ██ ██      ██  ██ ██ ██   ██ ██      ██   ██ 
+// ██   ██ ███████ ██   ████ ██████  ███████ ██   ██ 
     return (
         <SafeAreaView style={{flex:1}}>
             <LinearGradient colors={['#000000', '#ff0000', '#aaaa00']} style={[{flex:1},styles.linearGradient]}>

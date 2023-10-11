@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import CryptoJS from 'react-native-crypto-js';
 import * as Keychain from 'react-native-keychain';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.js';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 // import CustomModal from '../../components/CustomModal/';
@@ -20,6 +21,7 @@ import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.js';
 
 
 const PasswordVault = () => {
+  const insets = useSafeAreaInsets();
   const [user, setUser] = useState("");
 
   const getCurrentUser = () => {
@@ -270,23 +272,30 @@ const PasswordVault = () => {
 
   return (
     <View style={styles.main}>
-      <View>
-        {/* <Text style={styles.title}>Password Vault</Text> */}
-        
+<View style={{flexDirection:'row',backgroundColor:'transparent', alignItems:'center'}}>
+      
         <View style={styles.searchBarContainer}>
-
-          <View style={styles.searchBarTextInputView}>
+          {/* <View style={styles.searchBarTextInputView}> */}
+          
+          <View style={{flex:1}}>
             <TextInput value={searchText} onChangeText={handleTextChange} style={styles.searchBarTextInput} cursorColor={"white"} placeholderTextColor={"#ffffff99"} placeholder='SEARCH...' />
-            <View style={styles.searchBarLine} /></View>
+            <View style={styles.searchBarLine} />
+          </View>
+
             <TouchableHighlight underlayColor="#ffffff80" onPress={() => handleTextChange("")} style={styles.searchBarDelBtn}>
               <Icon name={"delete"} color={'white'} size={25} />
             </TouchableHighlight>
-          </View>
 
-        </View>
+      </View>
+
+            <TouchableHighlight style={{backgroundColor:'transparent',justifyContent:'center',alignItems:'center',borderRadius:50,marginRight:10,marginLeft:10}} underlayColor="#ffffff50" onPress={() => setModalVisible(true)} >
+              <Icon style={{textShadowColor: 'rgba(0, 0, 0, 0.75)',textShadowOffset: { width: -2, height: -1 }, textShadowRadius: 1}}  name={"plus-circle"} color={'orange'} size={50} />
+            </TouchableHighlight>
+
+</View>
 
         {loading ? <LoadingSpinner msg="Loading data..." /> : (
-                  <View>
+                  <View style={{flex:1, marginBottom: insets.bottom }}>
                   {
                   data.length > 0 ? 
                   <FlatList data={data} renderItem={render} ItemSeparatorComponent={separator} /> 
@@ -298,11 +307,11 @@ const PasswordVault = () => {
                   </View>
         )}
 
-      <View style={styles.floatingButtonView}>
+      {/* <View style={styles.floatingButtonView}>
         <FloatingButton pressAction={() => {
           setModalVisible(true)
           }}  title={"+"}/>
-      </View>
+      </View> */}
 
 
       {/* <CustomModal isVisible={modalVisible} content={yazdir()} onClose={() => setModalVisible(!modalVisible)} /> */}
