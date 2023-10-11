@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import Router from "./src/Router";
 import * as Keychain from 'react-native-keychain'; //pin için
 import FlashMessage from "react-native-flash-message";
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -18,13 +19,15 @@ const App = () => {
     }
   };
 
-  useEffect(() => {
-    savePin("1235")
+  // useEffect(() => {
+  //   savePin("1235")
   
-    return () => {
-      savePin("1235")
-    }
-  }, [])
+  //   return () => {
+  //     savePin("1235")
+  //   }
+  // }, [])
+
+  // AsyncStorage.clear();
   
 
   return (

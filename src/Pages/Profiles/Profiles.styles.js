@@ -12,7 +12,7 @@ export default styles = StyleSheet.create({
     title:
     {
         textAlign: 'center', fontSize: 30, color: 'orange', fontWeight: 'bold', textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        textShadowOffset: { width: -1, height: 1 }, textShadowRadius: 10
+        textShadowOffset: { width: -1, height: 1 }, textShadowRadius: 1
     },
     addModal: {//bunları gerçek responsive yap...
         main: { alignSelf: 'center', width: deviceWidth * 0.6, height: deviceHeight * 0.18, backgroundColor: 'white', borderRadius: 15, padding: 5 },

@@ -54,7 +54,7 @@ const Router = () => {
     const user = auth().currentUser;
     if (user) {
       // console.log(user.email); //print active user
-      setUser(user.email)
+      // setUser(user.email)
       return user.email;
     } else {
       console.log('logged user not found');
@@ -63,7 +63,10 @@ const Router = () => {
   }; 
 
   useEffect(() => {
-    getBooleanValue(getCurrentUser()+'_isPasswordEnabled').then((result) => {
+    // AsyncStorage.setItem(getCurrentUser() + "_isPasswordEnabled", "false"); // kaldırrrrrrr
+    getBooleanValue(getCurrentUser()+'_isPasswordEnabled')
+    .then((result) => {
+      // console.log("router.js getboolean: ", result)
       setIsPinEnabled(result);
     });
   }, [isPinEnabled]);
@@ -107,7 +110,11 @@ const Router = () => {
       }
 
   
-
+// ██████  ███████ ███    ██ ██████  ███████ ██████  
+// ██   ██ ██      ████   ██ ██   ██ ██      ██   ██ 
+// ██████  █████   ██ ██  ██ ██   ██ █████   ██████  
+// ██   ██ ██      ██  ██ ██ ██   ██ ██      ██   ██ 
+// ██   ██ ███████ ██   ████ ██████  ███████ ██   ██ 
     return (
         <NavigationContainer>
           {loading && <LoadingSpinner />}
@@ -117,7 +124,3 @@ const Router = () => {
     }
     
     export default Router;
-    
-    
-    
-    // {/* {user ? <DrawerNavigator /> : <AuthStack />} */}
