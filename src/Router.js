@@ -16,8 +16,11 @@ import BiometricsLockScreen from './Pages/BiometricsLockScreen';
 import useBiometrics from './hooks/useBiometrics';
 
 const Router = () => {
-
+  const [loading, setLoading] = useState(false)
+  const [isPinEnabled, setIsPinEnabled] = useState(false);
   const [isBioLoginEnabled, setIsBioLoginEnabled] = useState(false)
+  const [user, setUser] = useState(auth().currentUser);
+  const {isAuthenticated, authenticateWithBiometrics} = useBiometrics()
 
 
   const getBioLoginEnabledState = async () => {
@@ -34,13 +37,7 @@ const Router = () => {
 
 }
 
-  useEffect(() => {
-    getBioLoginEnabledState()
 
-    return () => {
-      getBioLoginEnabledState()
-    }
-  }, [])
 
 
 
@@ -58,8 +55,7 @@ const Router = () => {
 
   const unlockedState = useSelector((state) => state.unlockState.value)
 
-  const [loading, setLoading] = useState(false)
-  const [isPinEnabled, setIsPinEnabled] = useState(false);
+
 
 
   const getValueFromStorage = async (key) => {
@@ -87,15 +83,6 @@ const Router = () => {
     }
   }; 
 
-  useEffect(() => {
-    // AsyncStorage.setItem(getCurrentUser() + "_isPinEnabled", "false"); // kaldırrrrrrrrrrrrrrrrrrrrrrrrrrrRRRRR
-    getValueFromStorage(getCurrentUser()+'_isPinEnabled')
-    .then((result) => {
-      setIsPinEnabled(result);
-    });
-  }, [isPinEnabled]);
-
-
 
   const storeEncryptionKey = async () => {
     setLoading(true)
@@ -113,7 +100,23 @@ const Router = () => {
 
 
     Orientation.lockToPortrait(); // Lock to portrait mode
-    const [user, setUser] = useState(auth().currentUser);
+    
+
+    useEffect(() => {
+      getBioLoginEnabledState()
+  
+      return () => {
+        getBioLoginEnabledState()
+      }
+    }, [])
+  
+    useEffect(() => {
+      // AsyncStorage.setItem(getCurrentUser() + "_isPinEnabled", "false"); // kaldırrrrrrrrrrrrrrrrrrrrrrrrrrrRRRRR
+      getValueFromStorage(getCurrentUser()+'_isPinEnabled')
+      .then((result) => {
+        setIsPinEnabled(result);
+      });
+    }, [isPinEnabled]);
 
     useEffect(() => {
         storeEncryptionKey()
@@ -134,7 +137,6 @@ const Router = () => {
       }
 
       const BioLoginScreen = () => {
-        const {isAuthenticated, authenticateWithBiometrics} = useBiometrics()
         if (isAuthenticated) {
           return PasswordScreen()
         } else {
