@@ -12,8 +12,34 @@ import { setUnlockState } from './features/unlockState/unlockStateSlice';
 import AuthStack from './Navigation/AuthStack';
 import DrawerNavigator from './Navigation/DrawerNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BiometricsLockScreen from './Pages/BiometricsLockScreen';
+import useBiometrics from './hooks/useBiometrics';
 
 const Router = () => {
+  const [loading, setLoading] = useState(false)
+  const [isPinEnabled, setIsPinEnabled] = useState(false);
+  const [isBioLoginEnabled, setIsBioLoginEnabled] = useState(false)
+  const [user, setUser] = useState(auth().currentUser);
+  const {isAuthenticated, authenticateWithBiometrics} = useBiometrics()
+
+
+  const getBioLoginEnabledState = async () => {
+    const result = await AsyncStorage.getItem("bioLoginEnabled")
+    console.log("result: ",result)
+    if (result === "true")
+    {
+        setIsBioLoginEnabled(true)
+    }
+    else
+    {
+        setIsBioLoginEnabled(false)
+    }
+
+}
+
+
+
+
 
 
   const dispatch = useDispatch()
@@ -21,21 +47,18 @@ const Router = () => {
   const handleAppStateChange = (nextAppState) => {
     if (nextAppState === 'background') {
       dispatch(setUnlockState(false));
+      
     }
   };
 
-
   AppState.addEventListener('change', handleAppStateChange);
 
-  const unlockedS = useSelector((state) => state.unlockState.value)
-  // console.log("unlockedS: ", unlockedS)
-
-  const [loading, setLoading] = useState(false)
-
-  const [isPinEnabled, setIsPinEnabled] = useState(false);
+  const unlockedState = useSelector((state) => state.unlockState.value)
 
 
-  const getBooleanValue = async (key) => {
+
+
+  const getValueFromStorage = async (key) => {
     try {
       const value = await AsyncStorage.getItem(key);
 
@@ -53,25 +76,12 @@ const Router = () => {
   const getCurrentUser = () => {
     const user = auth().currentUser;
     if (user) {
-      // console.log(user.email); //print active user
-      // setUser(user.email)
       return user.email;
     } else {
       console.log('logged user not found');
       return false;
     }
   }; 
-
-  useEffect(() => {
-    // AsyncStorage.setItem(getCurrentUser() + "_isPasswordEnabled", "false"); // kaldırrrrrrr
-    getBooleanValue(getCurrentUser()+'_isPasswordEnabled')
-    .then((result) => {
-      // console.log("router.js getboolean: ", result)
-      setIsPinEnabled(result);
-    });
-  }, [isPinEnabled]);
-
-
 
 
   const storeEncryptionKey = async () => {
@@ -90,7 +100,23 @@ const Router = () => {
 
 
     Orientation.lockToPortrait(); // Lock to portrait mode
-    const [user, setUser] = useState(auth().currentUser);
+    
+
+    useEffect(() => {
+      getBioLoginEnabledState()
+  
+      return () => {
+        getBioLoginEnabledState()
+      }
+    }, [])
+  
+    useEffect(() => {
+      // AsyncStorage.setItem(getCurrentUser() + "_isPinEnabled", "false"); // kaldırrrrrrrrrrrrrrrrrrrrrrrrrrrRRRRR
+      getValueFromStorage(getCurrentUser()+'_isPinEnabled')
+      .then((result) => {
+        setIsPinEnabled(result);
+      });
+    }, [isPinEnabled]);
 
     useEffect(() => {
         storeEncryptionKey()
@@ -101,13 +127,37 @@ const Router = () => {
         return unsubscribe;
       }, []);
 
-      const isUserLoggedIn = () => {
-        if (user) {
+
+      const PasswordScreen = () => {
+        if (!unlockedState && isPinEnabled) {
+          return <AppPassword />
+        }else{
           return <DrawerNavigator />
-        } else {
-          return <AuthStack />
         }
       }
+
+      const BioLoginScreen = () => {
+        if (isAuthenticated) {
+          return PasswordScreen()
+        } else {
+          authenticateWithBiometrics()
+          return <BiometricsLockScreen />
+        }
+      }
+
+
+      const checkBiometricsAuth = () => {
+        console.log("isboll", isBioLoginEnabled)
+        if (isBioLoginEnabled) 
+        {
+          return BioLoginScreen()
+        } 
+        else 
+        {
+          return PasswordScreen()
+        }
+      }
+
 
   
 // ██████  ███████ ███    ██ ██████  ███████ ██████  
@@ -118,7 +168,7 @@ const Router = () => {
     return (
         <NavigationContainer>
           {loading && <LoadingSpinner />}
-            {!unlockedS && isPinEnabled && user  ? <AppPassword /> : isUserLoggedIn()}
+            {user ? checkBiometricsAuth() : <AuthStack />}
         </NavigationContainer>
       )
     }

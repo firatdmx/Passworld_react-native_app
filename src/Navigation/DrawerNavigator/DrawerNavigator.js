@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, Button, View, Pressable, SafeAreaView,TouchableHighlight} from "react-native"
+import {Text, View, Pressable, TouchableHighlight} from "react-native"
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import AppStack from '../AppStack';
@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './DrawerNavigator.styles'
 import { DrawerContentScrollView, DrawerItemList} from '@react-navigation/drawer';
+
 
 
 function CustomDrawerContent(props) {

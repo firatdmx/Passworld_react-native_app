@@ -1,5 +1,5 @@
 import { Text, FlatList, View, TextInput, TouchableOpacity, Pressable, Alert, ToastAndroid } from 'react-native'
-import React, {useState, useCallback, useRef, useEffect} from 'react'
+import React, {useState, useCallback, useRef} from 'react'
 import styles from './Profiles.styles.js'
 import firestore from '@react-native-firebase/firestore';
 import ViewProfiles from '../../components/ViewProfiles';
@@ -13,8 +13,6 @@ import auth from '@react-native-firebase/auth'
 
 
 const Profiles = () => {
-  
-
   const [loading, setLoading] = useState(false)
   const [user, setUser] = useState("");
 
@@ -137,6 +135,100 @@ const Profiles = () => {
         setSelectedProfile("")
       }
 
+      const ProfilesScreen = () => {
+              return(
+      <View style={styles.main}>
+
+      <Text style={styles.title}>Choose a profile</Text>
+
+      {data.length != 0 ? 
+      <View style={{flex:1}}>
+        <FlatList
+          numColumns={2}
+          data={data}
+          renderItem={render}
+          key={data}
+          style={{paddingHorizontal:10}}
+          />
+      </View>
+
+        :
+        <View>
+          <Text style={{color:'gray',fontWeight:'bold',fontSize:15}}>No profiles have been found...Please add a new profile.</Text>
+        </View>
+        }
+
+      {/* floating button style duzenlenecek */}
+
+      <Modal 
+        isVisible={profileAddModalVisible}
+        statusBarTranslucent={true}
+        onBackButtonPress={handleModalCancel}
+        onBackdropPress={handleModalCancel}
+        animationType="fade"
+        transparent={true}
+        hardwareAccelerated
+        onShow={focusProfileName}
+        >
+        
+        <View style={styles.addModal.main}>
+          <Text style={styles.addModal.title}>Add New Profile</Text>
+          <Text>Profile Name:</Text>
+          <TextInput ref={profileRef} style={styles.addModal.textinput} placeholder='Enter a new profile name: ' value={newProfileName} onChangeText={setNewProfileName} />
+
+          <View style={styles.addModal.buttonsView} >
+            <TouchableOpacity onPress={handleModalCancel} >
+              <Text style={styles.addModal.cancelBtnText}>Cancel</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => addProfile(newProfileName.toUpperCase())} >
+              <Text style={styles.addModal.addBtnText}>Add</Text>
+            </TouchableOpacity>
+
+
+          </View>
+
+        </View>
+      </Modal>
+
+      <Modal 
+        isVisible={deleteModalVisible}
+        statusBarTranslucent={true}
+        onBackButtonPress={() => setDeleteModalVisible(false)}
+        onBackdropPress={() => setDeleteModalVisible(false)}
+        animationType="fade"
+        transparent={true}
+        >
+        
+        <View style={styles.delModal.main}>
+          <Text style={styles.delModal.confirmText}>Are you sure?</Text>
+              <Text>To delete "{selectedProfile}"" profile enter <Text style={styles.delModal.boldText}>"{selectedProfile}"</Text> into the box below and confirm.</Text>
+              <TextInput style={styles.delModal.textInput} value={verificationText} onChangeText={setVerificationText} />
+
+          <View style={styles.delModal.btnsView}>
+
+            <Pressable onPress={() => setDeleteModalVisible(false)} style={styles.delModal.btnProps}>
+              <Text style={styles.delModal.cancelBtnText}>Cancel</Text>
+            </Pressable>
+
+            <Pressable onPress={() => handleProfileDeleteAction(selectedProfile.toUpperCase())} style={styles.delModal.btnProps}>
+              <Text style={styles.delModal.confirmBtnText}>Confirm</Text>
+            </Pressable>
+
+          </View>
+
+        </View>
+      </Modal>
+
+
+      <View style={styles.floatingAddBtn}>
+        <FloatingButton title={"+"} pressAction={toggleProfileAddModal} />
+      </View>
+
+      </View> 
+        )
+      }
+
 
 // ██████  ███████ ███    ██ ██████  ███████ ██████  
 // ██   ██ ██      ████   ██ ██   ██ ██      ██   ██ 
@@ -145,103 +237,7 @@ const Profiles = () => {
 // ██   ██ ███████ ██   ████ ██████  ███████ ██   ██ 
     return (
       <View style={{flex:1,}}>
-        {loading ? <LoadingSpinner msg={"Loading profiles"} /> :
-         
-        
-        
-        (
-
-        <View style={styles.main}>
-
-            <Text style={styles.title}>Choose a profile</Text>
-
-            {data.length != 0 ? 
-            <View style={{flex:1}}>
-              <FlatList
-                numColumns={2}
-                data={data}
-                renderItem={render}
-                key={data}
-                style={{paddingHorizontal:10}}
-                />
-            </View>
-
-              :
-              <View>
-                <Text style={{color:'gray',fontWeight:'bold',fontSize:15}}>No profiles have been found...Please add a new profile.</Text>
-              </View>
-              }
-
-            {/* floating button style duzenlenecek */}
-
-            <Modal 
-              isVisible={profileAddModalVisible}
-              statusBarTranslucent={true}
-              onBackButtonPress={handleModalCancel}
-              onBackdropPress={handleModalCancel}
-              animationType="fade"
-              transparent={true}
-              hardwareAccelerated
-              onShow={focusProfileName}
-              >
-              
-              <View style={styles.addModal.main}>
-                <Text style={styles.addModal.title}>Add New Profile</Text>
-                <Text>Profile Name:</Text>
-                <TextInput ref={profileRef} style={styles.addModal.textinput} placeholder='Enter a new profile name: ' value={newProfileName} onChangeText={setNewProfileName} />
-
-                <View style={styles.addModal.buttonsView} >
-                  <TouchableOpacity onPress={handleModalCancel} >
-                    <Text style={styles.addModal.cancelBtnText}>Cancel</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => addProfile(newProfileName.toUpperCase())} >
-                    <Text style={styles.addModal.addBtnText}>Add</Text>
-                  </TouchableOpacity>
-
-
-                </View>
-
-              </View>
-            </Modal>
-
-            <Modal 
-              isVisible={deleteModalVisible}
-              statusBarTranslucent={true}
-              onBackButtonPress={() => setDeleteModalVisible(false)}
-              onBackdropPress={() => setDeleteModalVisible(false)}
-              animationType="fade"
-              transparent={true}
-              >
-              
-              <View style={styles.delModal.main}>
-                <Text style={styles.delModal.confirmText}>Are you sure?</Text>
-                    <Text>To delete "{selectedProfile}"" profile enter <Text style={styles.delModal.boldText}>"{selectedProfile}"</Text> into the box below and confirm.</Text>
-                    <TextInput style={styles.delModal.textInput} value={verificationText} onChangeText={setVerificationText} />
-
-                <View style={styles.delModal.btnsView}>
-
-                  <Pressable onPress={() => setDeleteModalVisible(false)} style={styles.delModal.btnProps}>
-                    <Text style={styles.delModal.cancelBtnText}>Cancel</Text>
-                  </Pressable>
-
-                  <Pressable onPress={() => handleProfileDeleteAction(selectedProfile.toUpperCase())} style={styles.delModal.btnProps}>
-                    <Text style={styles.delModal.confirmBtnText}>Confirm</Text>
-                  </Pressable>
-
-                </View>
-
-              </View>
-            </Modal>
-
-
-            <View style={styles.floatingAddBtn}>
-              <FloatingButton title={"+"} pressAction={toggleProfileAddModal} />
-            </View>
-        </View> )
-      }
-
-
+        {loading ? <LoadingSpinner msg={"Loading profiles"} /> : ProfilesScreen() }
         </View>
     )
 }
