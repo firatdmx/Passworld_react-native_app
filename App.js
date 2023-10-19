@@ -1,35 +1,14 @@
 import "react-native-gesture-handler"
-import React, { useEffect } from "react";
+import React from "react";
 import  {store} from "./src/app/store"
 import { Provider } from 'react-redux'
 import Router from "./src/Router";
-import * as Keychain from 'react-native-keychain'; //pin için
 import FlashMessage from "react-native-flash-message";
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import useBiometrics from "./src/hooks/useBiometrics";
 
 
 const App = () => {
-  const savePin = async (pinVal) => {
-    try {
-      await Keychain.setGenericPassword('pin', pinVal, {service:"pinCode"});
-      // console.log('PIN saved successfully.', pinVal);
-    } catch (error) {
-      console.error('Error saving PIN:', error);
-    }
-  };
-
-  // useEffect(() => {
-  //   savePin("1235")
-  
-  //   return () => {
-  //     savePin("1235")
-  //   }
-  // }, [])
-
-  // AsyncStorage.clear();
-  
-
+  // useBiometrics()
   return (
     <Provider store={store}>
       <Router />
@@ -41,3 +20,18 @@ const App = () => {
 export default App;
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+// import * as Keychain from 'react-native-keychain'; //pin için
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+// AsyncStorage.clear();
