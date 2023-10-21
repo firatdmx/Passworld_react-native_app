@@ -69,3 +69,4 @@ yarn-error.log
 .env
 installAPK.bat
 runAndroid.bat
+android\app\google-services.json
