@@ -26,8 +26,8 @@ const headerMenuIcon = () => {
 const AppStack = () => {
     return (
         <Stack.Navigator initialRouteName="Profiles" screenOptions={headerstyle.main}>
-            <Stack.Screen name="Profiles" options={{headerTitle:"Password Vault",headerLeft:headerMenuIcon,headerRight:null}} component={ProfilesPage} />
-            <Stack.Screen name="PasswordVault" options={{headerTitle:"Password Vault",headerLeft:headerMenuIcon}} component={PasswordVaultPage} />
+            <Stack.Screen name="Profiles" options={{headerTitle:"PassWorld",headerLeft:headerMenuIcon,headerRight:null,}} component={ProfilesPage} />
+            <Stack.Screen name="PasswordVault" options={{headerTitle:"PassWorld",headerLeft:headerMenuIcon}} component={PasswordVaultPage} />
             <Stack.Screen name="EditRecord" component={EditRecordPage} />
             <Stack.Screen name="Settings" component={SettingsPage} />
         </Stack.Navigator>
@@ -50,6 +50,11 @@ export const headerstyle = StyleSheet.create({
         {
             marginTop:30,
             backgroundColor:"#128c7e",
+        },
+        headerTitleStyle:
+        {
+            fontWeight:'bold',
+            fontSize:25,
         }
     }
 })
