@@ -25,7 +25,6 @@ const Router = () => {
 
   const getBioLoginEnabledState = async () => {
     const result = await AsyncStorage.getItem("bioLoginEnabled")
-    console.log("result: ",result)
     if (result === "true")
     {
         setIsBioLoginEnabled(true)
@@ -147,7 +146,6 @@ const Router = () => {
 
 
       const checkBiometricsAuth = () => {
-        console.log("isboll", isBioLoginEnabled)
         if (isBioLoginEnabled) 
         {
           return BioLoginScreen()

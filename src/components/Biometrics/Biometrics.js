@@ -21,16 +21,16 @@ const Biometrics = () => {
         
             if (available && biometryType === BiometryTypes.TouchID) {
                 setData('TouchID is supported')
-                console.log('TouchID is supported')
+                // console.log('TouchID is supported')
             } else if (available && biometryType === BiometryTypes.FaceID) {
                 setData('FaceID is supported')
-                console.log('FaceID is supported')
+                // console.log('FaceID is supported')
             } else if (available && biometryType === BiometryTypes.Biometrics) {
                 setData('Biometrics is supported')
-                console.log('Biometrics is supported')
+                // console.log('Biometrics is supported')
             } else {
                 setData('Biometrics not supported')
-                console.log('Biometrics not supported')
+                // console.log('Biometrics not supported')
             }
           })
     }
@@ -56,7 +56,6 @@ const Biometrics = () => {
     
     const getBioLoginEnabledState = async () => {
         const result = await AsyncStorage.getItem("bioLoginEnabled")
-        console.log("result: ",result)
         if (result === "true")
         {
             setIsBioLoginEnabled(true)

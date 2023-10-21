@@ -15,7 +15,7 @@ const useBiometrics = () => {
         const {success} = resultObject;
   
         if (success) {
-          console.log('successful biometrics provided');
+          // console.log('successful biometrics provided');
           setIsAuthenticated(true)
         } else {
           console.log('user cancelled biometric prompt');

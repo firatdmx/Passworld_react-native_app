@@ -14,7 +14,6 @@ const Settings = () => {
 
   const getBioLoginEnabledState = async () => {
     const result = await AsyncStorage.getItem("bioLoginEnabled")
-    console.log("result: ",result)
     if (result === "true")
     {
         setIsBioLoginEnabled(true)
