@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "386830747111",
+    "project_id": "passworld-55c59",
+    "storage_bucket": "passworld-55c59.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386830747111:android:7367a641e0bf1712cde942",
+        "android_client_info": {
+          "package_name": "com.passworld"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386830747111-8jbte75knfd85bodsr6fe3gchb6jrjam.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDojBi9Ii5JcUyUgS87ufu3Slwg1b6jqdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386830747111-8jbte75knfd85bodsr6fe3gchb6jrjam.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
