@@ -56,15 +56,14 @@ const Auth = () => {
       if(mail) {
         auth().sendPasswordResetEmail(mail)
         .then(r => {
-          console.log("Password Reset: ", r)
           setLoading(false)
         })
         .catch(e => {
-          console.log(e)
+          showMessage("Error",authErrorMessageParser(error.code))
           setLoading(false)
         })
       } else {
-        showMessage("Error","Mail does not exist.")
+        showMessage("Error","Mail does not exist.Enter mail address first.")
         setLoading(false)
       }
     }
