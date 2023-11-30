@@ -4,15 +4,31 @@ import  {store} from "./src/app/store"
 import { Provider } from 'react-redux'
 import Router from "./src/Router";
 import FlashMessage from "react-native-flash-message";
-import useBiometrics from "./src/hooks/useBiometrics";
+
+// import * as Keychain from 'react-native-keychain'; //pin için
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 
 const App = () => {
-  // useBiometrics()
+  // AsyncStorage.clear();
+  const getAll = async() => {
+    const result = await AsyncStorage.getAllKeys()
+    console.log("async storage: ", result)
+    const dev = await AsyncStorage.getItem("dev@dev.com_isPinEnabled")
+    const isBioEnabled = AsyncStorage.getItem("bioLoginEnabled")
+    console.log("dev@dev.com_isPinEnabled: ", dev)
+    console.log("dev@dev.com_isPinEnabled: ", dev)
+  }
+  getAll()
+
+
   return (
     <Provider store={store}>
       <Router />
-      <FlashMessage style={{marginTop:20}} position="top" />
+      <FlashMessage style={{marginTop:20, elevation:4}} position="top" />
     </Provider>
   );
 };
@@ -32,6 +48,3 @@ export default App;
 
 
 
-// import * as Keychain from 'react-native-keychain'; //pin için
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-// AsyncStorage.clear();

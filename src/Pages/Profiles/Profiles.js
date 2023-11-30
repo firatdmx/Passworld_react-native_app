@@ -173,7 +173,7 @@ const Profiles = () => {
         
         <View style={styles.addModal.main}>
           <Text style={styles.addModal.title}>Add New Profile</Text>
-          <Text>Profile Name:</Text>
+          <Text style={{color:"black"}}>Profile Name:</Text>
           <TextInput ref={profileRef} style={styles.addModal.textinput} placeholder='Enter a new profile name: ' value={newProfileName} onChangeText={setNewProfileName} />
 
           <View style={styles.addModal.buttonsView} >
@@ -202,7 +202,7 @@ const Profiles = () => {
         
         <View style={styles.delModal.main}>
           <Text style={styles.delModal.confirmText}>Are you sure?</Text>
-              <Text>To delete "{selectedProfile}"" profile enter <Text style={styles.delModal.boldText}>"{selectedProfile}"</Text> into the box below and confirm.</Text>
+              <Text style={{color:'black'}}>To delete "{selectedProfile}" profile enter <Text style={styles.delModal.boldText}>"{selectedProfile}"</Text> into the box below and confirm.</Text>
               <TextInput style={styles.delModal.textInput} value={verificationText} onChangeText={setVerificationText} />
 
           <View style={styles.delModal.btnsView}>

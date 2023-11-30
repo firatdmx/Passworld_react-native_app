@@ -7,6 +7,8 @@ import auth from '@react-native-firebase/auth'
 import * as Keychain from 'react-native-keychain';
 import Modal from 'react-native-modal';
 import SettingsContainer from '../SettingsContainer/SettingsContainer.js';
+import { showMessage } from "react-native-flash-message";
+import FlashMessage from "react-native-flash-message";
 
 const PinCode = () => {
     const [isPinSet, setIsPinSet] = useState(false);
@@ -14,6 +16,15 @@ const PinCode = () => {
     const [isSetPinModalVisible, setIsSetPinModalVisible] = useState(false);
     const [newPin, setNewPin] = useState("");
     const [user, setUser] = useState("")
+
+
+    const showErrorMessage = () => {
+      showMessage({
+        message: 'Error!',
+        description: 'Pin Code should be at least 4 digits.',
+        type: 'danger',
+      });
+    };
 
     const getCurrentUser = () => {
         const user = auth().currentUser;
@@ -100,21 +111,28 @@ const PinCode = () => {
 
   const savePin = async () => {
     const servis = user + "_pinCode"
-    // console.log("servis",servis)
-    try {
-      await Keychain.setGenericPassword('pin', newPin, {service: servis})
-      .then(() => 
-      {
-        // console.log('PIN saved successfully.', newPin),
-        setIsPinLoginEnabled(!isPinLoginEnabled) //yeni ekledim toggledaydi
-        setIsPinSet(true)
-        setPinAlert()
+    if (newPin.length >= 4) 
+    {
+      try {
+        await Keychain.setGenericPassword('pin', newPin, {service: servis})
+        .then(() => 
+        {
+          // console.log('PIN saved successfully.', newPin),
+          setIsPinLoginEnabled(!isPinLoginEnabled) //yeni ekledim toggledaydi
+          setIsPinSet(true)
+          setPinAlert()
+        }
+        )
+        
+      } catch (error) {
+        console.error('Error saving PIN:', error);
       }
-      )
-      
-    } catch (error) {
-      console.error('Error saving PIN:', error);
+    } 
+    else
+    {
+      showErrorMessage()
     }
+    
   };
 
 
@@ -172,6 +190,12 @@ const PinCode = () => {
       setIsSetPinModalVisible(false)
     }
 
+    handlePinTextChange = (item) => {
+      const cleanText = item.replace(/\D/g, '')
+      console.log(cleanText)
+      setNewPin(cleanText)
+    }
+
 
     const setPinAlert = () => {
       return(
@@ -196,6 +220,9 @@ const PinCode = () => {
       console.log("RESETTED dev")
     }
 
+    // setNewPin("1234")
+    
+
 
 // ██████  ███████ ███    ██ ██████  ███████ ██████  
 // ██   ██ ██      ████   ██ ██   ██ ██      ██   ██ 
@@ -207,7 +234,7 @@ const PinCode = () => {
             <View>
                 <View style={{backgroundColor:'white',padding:5,borderRadius:10}}>
                     <View style={{ flexDirection: 'row',justifyContent: 'space-between',alignItems: 'flex-start',}}>
-                    <Text style={{}}>Pin Code Enabled</Text>
+                    <Text style={{color:"black"}}>Pin Code Enabled</Text>
                     <Switch
                         //   style={{marginLeft: 20, transform: [{scaleX: 1.3}, {scaleY: 1.3}]}}
                         onValueChange={toggleSwitch}
@@ -216,6 +243,7 @@ const PinCode = () => {
                         thumbColor={isPinLoginEnabled ? 'green' : 'darkgray'}
                         />
                     </View>
+
 
                     {isPinSet && 
                     <View>
@@ -257,6 +285,7 @@ const PinCode = () => {
           backdropOpacity={0.5}
           transparent={true}
           hardwareAccelerated
+          style={{elevation:1}}
           // onShow={{}}
         >
           <View
@@ -283,10 +312,14 @@ const PinCode = () => {
                 margin: 5,
                 borderRadius: 20,
                 paddingLeft: 10,
+                color:"black"
               }}
               placeholder="Enter new pin..."
               value={newPin}
-              onChangeText={setNewPin}
+              maxLength={6}
+              keyboardType="numeric"
+              onChangeText={handlePinTextChange}
+              // onChangeText={setNewPin}
               // onSubmitEditing={}
             />
 
@@ -310,11 +343,12 @@ const PinCode = () => {
                 onPress={savePin}>
                 <Text
                   style={{fontWeight: 'bold', fontSize: 20, color: 'white'}}>
-                  Add
+                  Set Pin
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
+          <FlashMessage style={{marginTop:20, elevation:4}} position="top" />
         </Modal>
             </View>
         )

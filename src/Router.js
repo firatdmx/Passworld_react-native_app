@@ -23,6 +23,9 @@ const Router = () => {
   const {isAuthenticated, authenticateWithBiometrics} = useBiometrics()
 
 
+  // AsyncStorage.setItem("dev@dev.com" + "_isPinEnabled", "false");
+
+
   const getBioLoginEnabledState = async () => {
     const result = await AsyncStorage.getItem("bioLoginEnabled")
     if (result === "true")
@@ -33,12 +36,7 @@ const Router = () => {
     {
         setIsBioLoginEnabled(false)
     }
-
 }
-
-
-
-
 
 
   const dispatch = useDispatch()
@@ -46,15 +44,14 @@ const Router = () => {
   const handleAppStateChange = (nextAppState) => {
     if (nextAppState === 'background') {
       dispatch(setUnlockState(false));
-      
     }
   };
+  
 
   AppState.addEventListener('change', handleAppStateChange);
 
   const unlockedState = useSelector((state) => state.unlockState.value)
-
-
+  // console.log("🚀 ~ file: Router.js:52 ~ Router ~ unlockedState:", unlockedState)
 
 
   const getValueFromStorage = async (key) => {
@@ -111,8 +108,9 @@ const Router = () => {
   
     useEffect(() => {
       // AsyncStorage.setItem(getCurrentUser() + "_isPinEnabled", "false"); // kaldırrrrrrrrrrrrrrrrrrrrrrrrrrrRRRRR
-      getValueFromStorage(getCurrentUser()+'_isPinEnabled')
+      getValueFromStorage(getCurrentUser() + '_isPinEnabled')
       .then((result) => {
+        // console.log("🚀 ~ file: Router.js:116 ~ .then ~ result:",getCurrentUser(), result)
         setIsPinEnabled(result);
       });
     }, [isPinEnabled]);

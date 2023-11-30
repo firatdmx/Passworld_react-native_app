@@ -90,16 +90,23 @@ const Biometrics = () => {
                 {data && (
                         <View style={{justifyContent:'center',}}>
                             <Text style={{color:'red',fontWeight:'bold'}}> {data}</Text>
+                            {data != "Biometrics not supported" ?  
+                            ( 
                             <View style={{flexDirection:'row', justifyContent:'space-between',alignItems:'center',padding:5}}>
-                                <Text>Use Biometrics:</Text>
+                                <Text style={{color:"black"}}>Use Biometrics:</Text>
                                 <Switch
-                                    onValueChange={toggleSwitch}
-                                    value={isBioLoginEnabled}
-                                    trackColor={{false: 'gray', true: 'gray'}}
-                                    thumbColor={isBioLoginEnabled ? 'green' : 'darkgray'}
+                                onValueChange={toggleSwitch}
+                                value={isBioLoginEnabled}
+                                trackColor={{false: 'gray', true: 'gray'}}
+                                thumbColor={isBioLoginEnabled ? 'green' : 'darkgray'}
                                 />
                             </View>
-                        </View>
+                                )
+                                :
+                                null
+                                }
+                            </View>
+                       
                 )}
             </View>
         )

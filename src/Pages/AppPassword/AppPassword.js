@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableHighlight,AppState, } from 'react-native'
+import { View, Text, TextInput, TouchableHighlight,AppState, Alert, } from 'react-native'
 import React, {useState,useEffect,useRef} from 'react'
 import * as Keychain from 'react-native-keychain'; //pin için
 import styles from './AppPassword.styles.js'
@@ -37,6 +37,7 @@ const AppPassword = () => {
           if (credentials) {
             setPins(credentials.password)
             // console.log('Retrieved PIN AppPassword.js:', pins);
+            console.log("AppPassword password: ", credentials.password)
             return pins;
           } else {
             console.log('No PIN found.');
@@ -79,23 +80,23 @@ const AppPassword = () => {
 
 
     useEffect(() => {
-        if (passVal.length == 4) {
-            if (passVal == pins) {
-                // console.log("PAROLA DOGRU")
-                dispatch(setUnlockState(true))
-            } else {
-                // console.log("PAROLA YANLIS")
-                showErrorMessage()
-                setPassVal("")
-                dispatch(setUnlockState(false))
-            }
-
+        if(pins != 0 && passVal.length == pins.length) {
+          if(passVal === pins) {
+            dispatch(setUnlockState(true))
+          }
+          else {
+            showErrorMessage()
+            setPassVal("")
+            dispatch(setUnlockState(false))
+                }
         }
+
     }, [passVal])
 
 
     const handleSetPass = (val) => {
-        if (passVal.length < 4) {
+      // console.log("handlesetpass: ", pins.length)
+        if (passVal.length < pins.length) {
             setPassVal(val)
         }
     }
@@ -126,7 +127,7 @@ const AppPassword = () => {
             <View style={{flex:1,justifyContent:'flex-end',alignItems:'center',}}>
                 <Text style={{marginTop:0,fontSize:35, textAlign:'center',color:'white',fontWeight:'bold'}}>PasswordVault{'\n'}is locked!</Text>
                 <TextInput 
-                    maxLength={4} 
+                    maxLength={6} 
                     style={{backgroundColor:'white', width:370, margin:10,borderRadius:10,paddingLeft:10,fontSize:20,color:'black'}} 
                     value={passVal} 
                     onChangeText={setPassVal} 
@@ -142,17 +143,17 @@ const AppPassword = () => {
         <View style={{flex:1,flexDirection:"row", justifyContent:'space-between', alignItems:'space-between'}}>
             <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "1")}>
             <View style={{flex:1, justifyContent:'center'}}>
-                <Text style={{fontSize:60}}>1</Text>
+                <Text style={{fontSize:60, color:'black'}}>1</Text>
                 </View>
             </TouchableHighlight>
             <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "2")}>
             <View style={{flex:1, justifyContent:'center'}}>
-                <Text style={{fontSize:60}}>2</Text>
+                <Text style={{fontSize:60, color:'black'}}>2</Text>
                 </View>
             </TouchableHighlight>
             <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "3")}>
             <View style={{flex:1, justifyContent:'center'}}>
-                <Text style={{fontSize:60}}>3</Text>
+                <Text style={{fontSize:60, color:'black'}}>3</Text>
                 </View>
             </TouchableHighlight>
         </View>
@@ -160,17 +161,17 @@ const AppPassword = () => {
         <View style={{flex:1,flexDirection:"row", justifyContent:'space-between', alignItems:'space-between'}}>
             <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "4")}>
             <View style={{flex:1, justifyContent:'center'}}>
-                <Text style={{fontSize:60}}>4</Text>
+                <Text style={{fontSize:60, color:'black'}}>4</Text>
                 </View>
             </TouchableHighlight>
             <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "5")}>
             <View style={{flex:1, justifyContent:'center'}}>
-                <Text style={{fontSize:60}}>5</Text>
+                <Text style={{fontSize:60, color:'black'}}>5</Text>
                 </View>
             </TouchableHighlight>
             <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "6")}>
             <View style={{flex:1, justifyContent:'center'}}>
-                <Text style={{fontSize:60}}>6</Text>
+                <Text style={{fontSize:60, color:'black'}}>6</Text>
                 </View>
             </TouchableHighlight>
         </View>
@@ -178,17 +179,17 @@ const AppPassword = () => {
         <View style={{flex:1,flexDirection:"row", justifyContent:'space-between', alignItems:'space-between'}}>
             <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "7")}>
             <View style={{flex:1, justifyContent:'center'}}>
-                <Text style={{fontSize:60}}>7</Text>
+                <Text style={{fontSize:60, color:'black'}}>7</Text>
                 </View>
             </TouchableHighlight>
             <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "8")}>
             <View style={{flex:1, justifyContent:'center'}}>
-                <Text style={{fontSize:60}}>8</Text>
+                <Text style={{fontSize:60, color:'black'}}>8</Text>
                 </View>
             </TouchableHighlight>
             <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "9")}>
                 <View style={{flex:1, justifyContent:'center'}}>
-                    <Text style={{fontSize:60}}>9</Text>
+                    <Text style={{fontSize:60, color:'black'}}>9</Text>
                 </View>
             </TouchableHighlight>
         </View>
@@ -201,7 +202,7 @@ const AppPassword = () => {
             </TouchableHighlight>
             <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "0")}>
             <View style={{flex:1, justifyContent:'center'}}>
-                    <Text style={{fontSize:60}}>0</Text>
+                    <Text style={{fontSize:60, color:'black'}}>0</Text>
                 </View>
             </TouchableHighlight>
             <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => setPassVal(passVal.substring(0, passVal.length -1))}>
