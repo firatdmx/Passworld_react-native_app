@@ -1,5 +1,17 @@
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
+It is a simple password storage project that I created to learn React Native. 
+The reason I used packages like Redux in this project was solely to experiment with them. 
+There are many steps yet to be done in the issues section but for now I am taking a short break from further developing this project as I am transitioning to Expo.
+
+In the project;
+* "PROFILES" section was not necessary. I decided on this application flow based solely on my own needs.
+* AsyncStorage, Redux, and Firebase Firestore database were used for data storage.
+* Firebase Auth handled the authentication process.
+* The PinCode was securely stored using react-native-keychain.
+* Data in the database was encrypted using react-native-crypto-js for enhanced security.
+* The token for secure pincode and data storage in databases is retrieved from the .env file using the 'react-native-config' package. It should be defined in .env file as -> MY_VERY_SECRET_KEY="here_comes_your_special_secret_token"
+
 # Getting Started
 
 >**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
