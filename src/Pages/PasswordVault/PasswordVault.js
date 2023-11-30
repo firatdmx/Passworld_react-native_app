@@ -307,16 +307,6 @@ const PasswordVault = () => {
                   </View>
         )}
 
-      {/* <View style={styles.floatingButtonView}>
-        <FloatingButton pressAction={() => {
-          setModalVisible(true)
-          }}  title={"+"}/>
-      </View> */}
-
-
-      {/* <CustomModal isVisible={modalVisible} content={yazdir()} onClose={() => setModalVisible(!modalVisible)} /> */}
-
-      {/* {modalVisible && <TestModal />} */}
       
 {/*
 ███    ███  ██████  ██████   █████  ██      

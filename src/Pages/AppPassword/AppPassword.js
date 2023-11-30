@@ -141,72 +141,72 @@ const AppPassword = () => {
         <View style={{flex:1,backgroundColor:'transparent',margin:10}}>
 
         <View style={{flex:1,flexDirection:"row", justifyContent:'space-between', alignItems:'space-between'}}>
-            <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "1")}>
-            <View style={{flex:1, justifyContent:'center'}}>
+            <TouchableHighlight underlayColor={"#f0f0f0"} style={styles.btnStyl} onPress={() => handleSetPass(passVal + "1")}>
+            <View style={styles.btnView}>
                 <Text style={{fontSize:60, color:'black'}}>1</Text>
                 </View>
             </TouchableHighlight>
-            <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "2")}>
-            <View style={{flex:1, justifyContent:'center'}}>
+            <TouchableHighlight underlayColor={"#f0f0f0"} style={styles.btnStyl} onPress={() => handleSetPass(passVal + "2")}>
+            <View style={styles.btnView}>
                 <Text style={{fontSize:60, color:'black'}}>2</Text>
                 </View>
             </TouchableHighlight>
-            <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "3")}>
-            <View style={{flex:1, justifyContent:'center'}}>
+            <TouchableHighlight underlayColor={"#f0f0f0"} style={styles.btnStyl} onPress={() => handleSetPass(passVal + "3")}>
+            <View style={styles.btnView}>
                 <Text style={{fontSize:60, color:'black'}}>3</Text>
                 </View>
             </TouchableHighlight>
         </View>
 
         <View style={{flex:1,flexDirection:"row", justifyContent:'space-between', alignItems:'space-between'}}>
-            <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "4")}>
-            <View style={{flex:1, justifyContent:'center'}}>
+            <TouchableHighlight underlayColor={"#f0f0f0"} style={styles.btnStyl} onPress={() => handleSetPass(passVal + "4")}>
+            <View style={styles.btnView}>
                 <Text style={{fontSize:60, color:'black'}}>4</Text>
                 </View>
             </TouchableHighlight>
-            <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "5")}>
-            <View style={{flex:1, justifyContent:'center'}}>
+            <TouchableHighlight underlayColor={"#f0f0f0"} style={styles.btnStyl} onPress={() => handleSetPass(passVal + "5")}>
+            <View style={styles.btnView}>
                 <Text style={{fontSize:60, color:'black'}}>5</Text>
                 </View>
             </TouchableHighlight>
-            <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "6")}>
-            <View style={{flex:1, justifyContent:'center'}}>
+            <TouchableHighlight underlayColor={"#f0f0f0"} style={styles.btnStyl} onPress={() => handleSetPass(passVal + "6")}>
+            <View style={styles.btnView}>
                 <Text style={{fontSize:60, color:'black'}}>6</Text>
                 </View>
             </TouchableHighlight>
         </View>
 
         <View style={{flex:1,flexDirection:"row", justifyContent:'space-between', alignItems:'space-between'}}>
-            <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "7")}>
-            <View style={{flex:1, justifyContent:'center'}}>
+            <TouchableHighlight underlayColor={"#f0f0f0"} style={styles.btnStyl} onPress={() => handleSetPass(passVal + "7")}>
+            <View style={styles.btnView}>
                 <Text style={{fontSize:60, color:'black'}}>7</Text>
                 </View>
             </TouchableHighlight>
-            <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "8")}>
-            <View style={{flex:1, justifyContent:'center'}}>
+            <TouchableHighlight underlayColor={"#f0f0f0"} style={styles.btnStyl} onPress={() => handleSetPass(passVal + "8")}>
+            <View style={styles.btnView}>
                 <Text style={{fontSize:60, color:'black'}}>8</Text>
                 </View>
             </TouchableHighlight>
-            <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "9")}>
-                <View style={{flex:1, justifyContent:'center'}}>
+            <TouchableHighlight underlayColor={"#f0f0f0"} style={styles.btnStyl} onPress={() => handleSetPass(passVal + "9")}>
+                <View style={styles.btnView}>
                     <Text style={{fontSize:60, color:'black'}}>9</Text>
                 </View>
             </TouchableHighlight>
         </View>
 
         <View style={{flex:1,flexDirection:"row", justifyContent:'space-between', alignItems:'space-between'}}>
-            <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={handleLogOut}>
-                <View style={{flex:1, justifyContent:'center'}}>
+            <TouchableHighlight underlayColor={"#f0f0f0"} style={styles.btnStyl} onPress={handleLogOut}>
+                <View style={styles.btnView}>
                         <Icon name={"logout"} color={'gray'} size={60} />
                     </View>
             </TouchableHighlight>
-            <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => handleSetPass(passVal + "0")}>
-            <View style={{flex:1, justifyContent:'center'}}>
+            <TouchableHighlight underlayColor={"#f0f0f0"} style={styles.btnStyl} onPress={() => handleSetPass(passVal + "0")}>
+            <View style={styles.btnView}>
                     <Text style={{fontSize:60, color:'black'}}>0</Text>
                 </View>
             </TouchableHighlight>
-            <TouchableHighlight underlayColor={"transparent"} style={{flex:1,margin:5,backgroundColor:'white',justifyContent:'center',alignItems:"center",borderRadius:6}} onPress={() => setPassVal(passVal.substring(0, passVal.length -1))}>
-                    <View style={{flex:1, justifyContent:'center'}}>
+            <TouchableHighlight underlayColor={"#f0f0f0"} style={styles.btnStyl} onPress={() => setPassVal(passVal.substring(0, passVal.length -1))}>
+                    <View style={styles.btnView}>
                         <Icon  name={"backspace"} color={'gray'} size={60} />
                     </View>
             </TouchableHighlight>

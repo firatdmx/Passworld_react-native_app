@@ -1,4 +1,4 @@
-import { Text, View, TextInput } from 'react-native'
+import { Text, View, TextInput, Pressable,KeyboardAvoidingView } from 'react-native'
 import React,{useState} from 'react'
 import styles from './Auth.styles.js'
 import auth from '@react-native-firebase/auth'
@@ -6,51 +6,66 @@ import AuthButton from '../../components/AuthButton';
 import {setUserInfo} from '../../features/userInfo/userInfoSlice';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner.js';
 import firestore from '@react-native-firebase/firestore';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import authErrorMessageParser from '../../utils/authErrorMessageParser.js';
+import { showMessage } from "react-native-flash-message";
 
 
 const Auth = () => {
-
+  const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(false)
+  const [mail, setMail] = useState("");
+  const [pass, setPass] = useState("");
 
-  
-  const [mail, setMail] = useState("dev@dev.com");   //bunlar null olacak
-  const [pass, setPass] = useState("123456");
+  const showErrorMessage = (info, messageText) => {
+    showMessage({
+      message: info,
+      description: messageText,
+      type: 'danger',
+    });
+  };
 
   const mailpassExist = () => {
       if (mail && pass) {
         return true;
-        
       } else{
-        console.log("mail or pass cannot be empty")
+        showErrorMessage("Error", "Mail or Password fields cannot be empty!")
+        setLoading(false)
         return false;
       }
     }
-
-  const signUp = () => {
+    
+    const signUp = () => {
       setLoading(true)
-        if(mailpassExist()) {
-          auth().createUserWithEmailAndPassword(mail, pass) 
-                .then(res => (
-                  console.log("signup successfull, " +res),
-                  setLoading(false)
-                  ))
-                .catch(error => { console.log("hataaaaaaa ", error)  })  
-        }
+      if(mailpassExist()) {
+        auth().createUserWithEmailAndPassword(mail, pass) 
+        .then(res => {
+          showErrorMessage("Info", "Signup Successfull!")
+          setLoading(false)
+        })
+        .catch(error => {
+          console.log("hataaaaaaa ", error.code )
+          showErrorMessage("Error", authErrorMessageParser(error.code))
+          setLoading(false)
+        })  
       }
-  
-
+      }
+      
+      
   const signIn = () => {
     setLoading(true)
-      if(mailpassExist()) {
-        auth().signInWithEmailAndPassword(mail, pass) 
-                    .then(res => (
-                      setLoading(false),
-                      setUserInfo(res),
-                      checkUserDocument()
-                      // console.log("abi res burada: ", res)
-                    )
-                      ) 
-                    .catch(error => { console.log("hataaaaaaa ", error)  })  
+    if(mailpassExist()) {
+      auth().signInWithEmailAndPassword(mail, pass) 
+      .then(res =>  {
+        setLoading(false)
+        setUserInfo(res)
+        checkUserDocument()
+      })
+      .catch(error => {
+        // console.log("LOGIN ERROR: ", error)
+        showErrorMessage("Error", authErrorMessageParser(error.code))
+        setLoading(false)
+      })  
         }
       }
 
@@ -60,15 +75,10 @@ const Auth = () => {
     const userXget = await firestore().collection('users').doc(userMail).get();
     const userX = firestore().collection('users').doc(userMail);
     if (userXget.exists) {
-      console.log("user EXISTS")
+      // console.log("user EXISTS")
     } else {
       userX.set({})
-      // await firestore().collection('users').doc(userMail).collection('profiles').add({"silbeni":"tamam"})
-      // .then((ref)=> {
-      //   console.log("refffffffffffffffffffffffff:" , ref)
-      //   ref.delete()
-      // })
-      console.log("NOT EXISTS WORKED")
+      // console.log("USER DOES NOT EXIST- WORKED")
     }
   }
   const getCurrentUser = () => {
@@ -76,7 +86,7 @@ const Auth = () => {
     if (user) {
       return user.email;
     } else {
-      console.log('logged user not found');
+      // console.log('logged user not found');
       return null;
     }
   };
@@ -88,29 +98,31 @@ const Auth = () => {
 // ██   ██ ██      ██  ██ ██ ██   ██ ██      ██   ██ 
 // ██   ██ ███████ ██   ████ ██████  ███████ ██   ██ 
     return (
-      <View style={{flex:1}}>
+      <View style={{flex:1,padding:20,marginTop: insets.top,marginBottom:insets.bottom,marginLeft:insets.left,marginRight:insets.right}}>
         {loading ? <LoadingSpinner msg={"Please Wait..."} /> : (
 
-      <View style={styles.main}>
+      <KeyboardAvoidingView style={styles.main}>
         <View style={styles.secondMain}>
           <Text style={styles.slogan}>
             Your Pass World!
           </Text>
 
           <View style={styles.textinpRows}>
-            <Text style={styles.rowLabel}>Mail: </Text>
+            <Text style={styles.rowLabel}>E-Mail: </Text>
             <TextInput
               placeholder="Enter your e-mail address"
+              placeholderTextColor={"gray"}
               value={mail}
               onChangeText={setMail}
               style={styles.textinp}
-            />
+              />
           </View>
 
           <View style={styles.textinpRows}>
-            <Text style={styles.rowLabel}>Pass: </Text>
+            <Text style={styles.rowLabel}>Password: </Text>
             <TextInput
               placeholder="Enter your password"
+              placeholderTextColor={"gray"}
               value={pass}
               onChangeText={setPass}
               style={styles.textinp}
@@ -118,11 +130,12 @@ const Auth = () => {
           </View>
 
           <AuthButton theme="orange" text="Login" action={signIn} />
-          <AuthButton text="Sign Up" action={signUp} />
+          <Pressable onPress={signUp}><Text style={{color:"blue",fontSize:17,alignSelf:'flex-end',marginRight:15,marginTop:5}}>Sign Up</Text></Pressable>
+          {/* <AuthButton text="Sign Up" action={signUp} /> */}
 
           </View>
           
-          </View>)}
+          </KeyboardAvoidingView>)}
           </View>
           );
 }

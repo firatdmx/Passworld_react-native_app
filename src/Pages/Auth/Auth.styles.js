@@ -3,7 +3,8 @@ import {StyleSheet} from 'react-native';
 export default styles = StyleSheet.create({
     main: {
         flex:1,
-        backgroundColor:'magenta'
+        backgroundColor:'orange',
+        marginTop:20
     },
     secondMain: {
         flex: 1,
@@ -15,20 +16,19 @@ export default styles = StyleSheet.create({
     },
     slogan: {
         fontWeight: 'bold', 
-        fontSize: 80,
+        fontSize: 50,
         fontFamily:"sans-serif-light",
-        color: 'magenta',
+        color: 'orange',
         textAlign:'center',
         textShadowOffset: {width:5, height:1},
         textShadowRadius:0.1,
-        textShadowColor:'cyan'        
+        textShadowColor:'black',
     },
     textinp: {
-        flex: 1, margin: 5, borderBottomWidth: 1
+        flex: 1, margin: 5, borderBottomWidth: 1,color:'black'
     },
     textinpRows: {
         flexDirection: 'row',
-        justifyContent: 'flex-start',
         alignItems: 'center',
         marginHorizontal:15,
     },
