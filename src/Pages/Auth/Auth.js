@@ -50,6 +50,24 @@ const Auth = () => {
         })  
       }
       }
+
+    const resetPW = () => {
+      setLoading(true)
+      if(mail) {
+        auth().sendPasswordResetEmail(mail)
+        .then(r => {
+          console.log("Password Reset: ", r)
+          setLoading(false)
+        })
+        .catch(e => {
+          console.log(e)
+          setLoading(false)
+        })
+      } else {
+        showMessage("Error","Mail does not exist.")
+        setLoading(false)
+      }
+    }
       
       
   const signIn = () => {
@@ -128,7 +146,7 @@ const Auth = () => {
               style={styles.textinp}
             />
           </View>
-
+          <Pressable onPress={resetPW}><Text style={{color:"blue",fontSize:17,alignSelf:'flex-start',marginLeft:15,marginTop:5}}>Forgot Password?</Text></Pressable>
           <AuthButton theme="orange" text="Login" action={signIn} />
           <Pressable onPress={signUp}><Text style={{color:"blue",fontSize:17,alignSelf:'flex-end',marginRight:15,marginTop:5}}>Sign Up</Text></Pressable>
           {/* <AuthButton text="Sign Up" action={signUp} /> */}
