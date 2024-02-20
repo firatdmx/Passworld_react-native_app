@@ -1,3 +1,7 @@
+# Demo Gif
+
+![demo](https://github.com/firatdmx/Passworld_react-native_app/blob/master/src/demo.gif?raw=true)
+## Info
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 It is a simple password storage project that I created to learn React Native. 
